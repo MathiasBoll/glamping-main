@@ -1,0 +1,23 @@
+.button {
+  padding: 0 30px;
+  border-radius: 50px 0;
+  background-color: #829b97;
+  border: none;
+  font-size: 48px;
+
+  p {
+    text-transform: uppercase;
+    color: white;
+    font-weight: 200;
+    font-family: "Zen Loop", cursive;
+  }
+}
+
+.transparent {
+  background: none;
+  border: 1px solid white;
+
+  p {
+    margin: 30px 0;
+  }
+}

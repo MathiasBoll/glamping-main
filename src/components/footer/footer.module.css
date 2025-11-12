@@ -1,0 +1,20 @@
+.footer {
+  background-color: #2a4f57;
+  padding: 40px 0;
+  display: flex;
+  justify-content: center;
+
+  img {
+    width: 50px;
+  }
+
+  h5 {
+    font-size: 40px;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}

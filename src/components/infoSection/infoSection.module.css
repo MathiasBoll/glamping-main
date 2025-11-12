@@ -1,0 +1,23 @@
+.infoSection {
+  background-color: #33626c;
+  padding: 100px 10px;
+  border-radius: 20px 0;
+  position: relative;
+  top: -20px;
+
+  h2 {
+    margin: 20px 0;
+    font-size: 64px;
+  }
+
+  p {
+    margin: 30px 0;
+  }
+
+  img {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+  }
+}

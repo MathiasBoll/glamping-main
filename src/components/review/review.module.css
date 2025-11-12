@@ -1,0 +1,15 @@
+.review {
+  background-color: #829b97;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 20px 0;
+
+  header {
+    margin-bottom: 20px;
+    h4 {
+      font-size: 30px;
+      margin-bottom: 0;
+      line-height: 35px;
+    }
+  }
+}
