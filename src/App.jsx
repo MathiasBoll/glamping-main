@@ -1,9 +1,10 @@
 import { useRoutes } from "react-router";
 import "./App.css";
 import Home from "./pages/Home";
+import Stays from "./pages/Stays";
 import Navigation from "./components/navigation/Navigation";
 import Footer from "./components/footer/Footer";
-import Stays from "./pages/Stays";
+import StayDetails from "./components/stayDetails/StayDetails";
 
 // Parent/forældre komponent - Den 'hoved'-komponent der styrer visninger af andre komponenter
 function App() {
@@ -11,6 +12,7 @@ function App() {
   const routes = useRoutes([
     { path: "/", element: <Home /> },
     { path: "/stays", element: <Stays /> },
+    { path: "/stay/:id", element: <StayDetails /> },
   ]);
 
   return (

@@ -1,5 +1,8 @@
 import styles from "./footer.module.css";
 import logo from "/logo.png";
+import facebookIcon from "/src/assets/icons/square-facebook.svg";
+import instagramIcon from "/src/assets/icons/square-instagram.svg";
+
 
 const Footer = () => {
   return (
@@ -9,11 +12,11 @@ const Footer = () => {
         {/* Sociale medier */}
         <div className={styles.footerSocial}>
           <a className={styles.footerIcon} href="/">
-            <img src="src/assets/icons/square-facebook.svg" alt="Facebook" />
+            <img src={facebookIcon} alt="Facebook" />
           </a>
 
           <a className={styles.footerIcon} href="/">
-            <img src="src/assets/icons/square-instagram.svg" alt="Instagram" />
+            <img src={instagramIcon} alt="Instagram" />
           </a>
         </div>
 
