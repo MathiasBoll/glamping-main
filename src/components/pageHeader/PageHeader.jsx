@@ -1,12 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../button/Button";
 import styles from "./pageHeader.module.css";
 
 const PageHeader = ({ logo, titleOne, titleTwo, button }) => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate(); // ← REACT ROUTER NAVIGATION
 
-  const toggle = () => {
+  const handleClick = () => {
     setOpen(!open);
+    navigate("/stays"); // ← SEND BRUGEREN TIL /stays
   };
 
   return (
@@ -18,15 +21,13 @@ const PageHeader = ({ logo, titleOne, titleTwo, button }) => {
         {titleOne} <span>{titleTwo}</span>
       </h1>
 
-      {/* Hvis button er true → vis knap med navigation */}
+      {/* Hvis button er true → vis knap */}
       {button && (
-        <a href="/stays">
-          <Button
-            buttonText="Book nu"
-            onClick={toggle}
-            variant="transparent"
-          />
-        </a>
+        <Button
+          buttonText="Book nu"
+          onClick={handleClick}
+          variant="transparent"
+        />
       )}
     </header>
   );
