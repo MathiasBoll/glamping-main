@@ -54,7 +54,7 @@ vores wellnessaktiviteter.`,
 
       <img src={content.image} alt="Gitte" />
 
-      {/* ✔️ Opdateret link til /stays */}
+      {/* link til /stays */}
       <a href="/stays">
         <Button buttonText={content.ctaText} />
       </a>
