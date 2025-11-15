@@ -6,12 +6,10 @@
 
   width: 100%;
   max-width: 375px;
-  margin: 0 auto;
-
-  padding-bottom: 80px; /* plads til knappen */
+  margin: 90px auto 40px; /* luft mellem kortene */
 }
 
-/* Beige titelboks */
+/* Beige titelboks, der overlapper toppen af billedet */
 .caption {
   background-color: #c6b497;
   color: white;
@@ -21,11 +19,13 @@
 
   position: absolute;
   top: 0;
+  left: 0;
+  right: 0;
   transform: translateY(-50%);
   z-index: 2;
 
-  width: 100%;
-  min-height: 174px;
+  min-height: 120px;
+  padding: 18px 20px;
 
   display: flex;
   flex-direction: column;
@@ -35,21 +35,19 @@
   font-family: "Zen Loop", cursive;
 }
 
-/* Titel */
 .title {
-  font-size: 60px;
+  font-size: 36px;
   font-weight: normal;
-  margin: 0;
+  margin: 0 0 4px;
 }
 
-/* Underlinjer */
 .titleTwo {
-  font-size: 30px;
+  font-size: 22px;
   font-weight: normal;
   margin: 0;
 }
 
-/* Billede */
+/* Billedet */
 .image {
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -57,27 +55,26 @@
   display: block;
 }
 
-/* Knap-overlay */
-.buttonWrap {
-  position: absolute;
-  bottom: 0;
-  transform: translateY(50%);
-  z-index: 2;
-
-  width: 100%;
-  max-width: 50%;
-}
-
-/* Styling af selve knappen */
-.buttonWrap button {
+/* Teal bar nederst */
+.bottomBar {
   width: 100%;
   background-color: #839b97;
-  border-radius: 66px 0 66px 0;
-  filter: drop-shadow(0px 3px 15px #00000029);
+  padding: 14px 0 22px;
+  display: flex;
+  justify-content: center;
+  border-radius: 0 0 66px 0;
 }
 
-/* Knaptekst */
-.buttonWrap button p {
+/* Overstyr den globale Button-styling, men kun inde i teal baren */
+.bottomBar :global(.button) {
+  background-color: #c6b497;       /* beige knap */
+  border-radius: 66px 0 66px 0;
+  padding: 6px 28px;
+  font-size: 24px;
+}
+
+.bottomBar :global(.button p) {
   font-family: "Zen Loop", cursive;
-  font-size: 30px;
+  font-size: 24px;
+  margin: 0;
 }
