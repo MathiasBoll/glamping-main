@@ -28,7 +28,7 @@ const StaysSection = () => {
 
   return (
     <section className='container'>
-      <h1>STAYS</h1>
+      <h1></h1>
       {stays.map((stay) => (
         <Stay stay={stay} key={stay._id} />
       ))}
