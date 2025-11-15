@@ -1,0 +1,83 @@
+.stay {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  max-width: 375px;
+  margin: 0 auto;
+
+  padding-bottom: 80px; /* plads til knappen */
+}
+
+/* Beige titelboks */
+.caption {
+  background-color: #c6b497;
+  color: white;
+
+  border-radius: 66px 0 66px 0;
+  filter: drop-shadow(0px 3px 15px #00000029);
+
+  position: absolute;
+  top: 0;
+  transform: translateY(-50%);
+  z-index: 2;
+
+  width: 100%;
+  min-height: 174px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+
+  font-family: "Zen Loop", cursive;
+}
+
+/* Titel */
+.title {
+  font-size: 60px;
+  font-weight: normal;
+  margin: 0;
+}
+
+/* Underlinjer */
+.titleTwo {
+  font-size: 30px;
+  font-weight: normal;
+  margin: 0;
+}
+
+/* Billede */
+.image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+/* Knap-overlay */
+.buttonWrap {
+  position: absolute;
+  bottom: 0;
+  transform: translateY(50%);
+  z-index: 2;
+
+  width: 100%;
+  max-width: 50%;
+}
+
+/* Styling af selve knappen */
+.buttonWrap button {
+  width: 100%;
+  background-color: #839b97;
+  border-radius: 66px 0 66px 0;
+  filter: drop-shadow(0px 3px 15px #00000029);
+}
+
+/* Knaptekst */
+.buttonWrap button p {
+  font-family: "Zen Loop", cursive;
+  font-size: 30px;
+}
