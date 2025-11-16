@@ -1,2 +1,122 @@
-.navigation {
+/* =====================================================
+   TOPBAR – fast navigation (ligger over hero/slider)
+   ===================================================== */
+.topbar {
+  width: 100%;
+  position: absolute;         /* læg den oven på heroen */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Logo (venstre hjørne – kun på undersider) */
+.topbarLogo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.topbarLogoImg {
+  width: 40px;
+  height: 40px;
+  display: block;
+  filter: brightness(0) invert(1); /* hvidt logo */
+}
+
+/* =====================================================
+   BURGERMENU (knappen til mobilmenu)
+   ===================================================== */
+.burger {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 8px;
+  background: #839b97;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.burger span {
+  width: 20px;
+  height: 2px;
+  background: #fff;
+  display: block;
+}
+
+/* =====================================================
+   MOBILMENU (overlay som dækker hele skærmen)
+   ===================================================== */
+.mobileMenu {
+  position: fixed;
+  inset: 0;
+  display: none;              /* skjult fra start */
+  background: #839b97;
+  z-index: 2000;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  font-family: "Zen Loop", cursive, system-ui, -apple-system, Segoe UI,
+    Roboto, Arial, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.active {
+  display: flex;
+}
+
+/* Links i mobilmenuen */
+.menuLink {
+  font-size: 1.8rem;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.menuLinkActive {
+  color: #f0d98c;
+}
+
+.menuLink:hover,
+.menuLink:focus {
+  color: #f0d98c;
+  outline: none;
+}
+
+/* Luk-knap (X øverst i menuen) */
+.closeBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2.2rem;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+
+  font-family: inherit;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* Forside: burger skal ligge til højre */
+.homeNav {
+  justify-content: flex-end;
 }
