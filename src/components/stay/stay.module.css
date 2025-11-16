@@ -1,80 +1,86 @@
+/* Hele kortet */
 .stay {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  width: 100%;
-  max-width: 375px;
-  margin: 90px auto 40px; /* luft mellem kortene */
+  /* centrér kortet og giv luft mellem dem */
+  margin: 80px auto 0;
+
+  /* mobil: smalt kort */
+  width: min(100%, 360px);
+
+  background: transparent;
 }
 
-/* Beige titelboks, der overlapper toppen af billedet */
+/* Beige top-boks med titel + info */
 .caption {
   background-color: #c6b497;
-  color: white;
+  color: #fff;
+  text-align: center;
+  font-family: "Zen Loop", cursive;
+  font-weight: 200;
 
   border-radius: 66px 0 66px 0;
+  padding: 24px 16px;
+
+  width: 100%;
   filter: drop-shadow(0px 3px 15px #00000029);
-
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-  z-index: 2;
-
-  min-height: 120px;
-  padding: 18px 20px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-
-  font-family: "Zen Loop", cursive;
 }
 
 .title {
-  font-size: 36px;
-  font-weight: normal;
-  margin: 0 0 4px;
+  font-size: 32px;
+  line-height: 1.1;
 }
 
 .titleTwo {
-  font-size: 22px;
-  font-weight: normal;
-  margin: 0;
+  font-size: 18px;
+  line-height: 1.2;
 }
 
-/* Billedet */
+/* Billedet i midten */
 .image {
   width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
   display: block;
+  object-fit: cover;
 }
 
-/* Teal bar nederst */
+/* Nederste teal bar med knap */
 .bottomBar {
-  width: 100%;
   background-color: #839b97;
-  padding: 14px 0 22px;
+  width: 100%;
+  border-radius: 0 0 66px 0;
+  filter: drop-shadow(0px 3px 15px #00000029);
+
   display: flex;
   justify-content: center;
-  border-radius: 0 0 66px 0;
+  padding: 22px 16px;
 }
 
-/* Overstyr den globale Button-styling, men kun inde i teal baren */
-.bottomBar :global(.button) {
-  background-color: #c6b497;       /* beige knap */
-  border-radius: 66px 0 66px 0;
-  padding: 6px 28px;
-  font-size: 24px;
+/* ========== RESPONSIVT LAYOUT ========== */
+
+/* Tablet – kortet bliver bredere */
+@media (min-width: 768px) {
+  .stay {
+    width: min(100%, 620px);
+  }
 }
 
-.bottomBar :global(.button p) {
-  font-family: "Zen Loop", cursive;
-  font-size: 24px;
-  margin: 0;
+/* Laptop/desktop – kortet fylder godt i bredden */
+@media (min-width: 1200px) {
+  .stay {
+    width: min(100%, 780px);
+  }
+
+  .image {
+    /* lidt højere billede på store skærme */
+    max-height: 460px;
+  }
 }
+
+/* Giver luft under sidste stay-kort */
+.stay:last-child {
+  margin-bottom: 80px;
+}
+
