@@ -1,0 +1,73 @@
+/* Hele teal-blokken under hero */
+.stayDetails {
+  --overlap: 83px;
+
+  background-color: #34626c;
+  color: #fff;
+  border-radius: 70px 0 0 0;
+
+  margin-top: calc(-1 * var(--overlap)); /* overlap med hero */
+  padding-top: var(--overlap);
+  padding-bottom: 100px;
+  padding-inline: 24px;
+
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Overskriften "Tag væk en weekend..." */
+.title {
+  font-family: "Zen Loop", cursive;
+  font-weight: 200;
+  font-size: 36px;
+  line-height: 1.2;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* Tekstcontainer */
+.info {
+  max-width: 500px;
+  text-align: center;
+  font-family: "Nanum Gothic", sans-serif;
+  font-size: 14px;
+}
+
+/* Beskrivelse */
+.desc {
+  margin-bottom: 24px;
+}
+
+/* "Opholdet indeholder:" */
+.includeTitle {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Liste med inkluderede ting */
+.included {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 24px 0;
+}
+
+.included li {
+  margin-bottom: 4px;
+}
+
+/* Pris-linje */
+.price {
+  margin-top: 8px;
+  margin-bottom: 24px;
+  font-family: "Zen Loop", cursive;
+  font-size: 24px;
+}
+
+/* Book-knap wrapper */
+.buttonWrap {
+  margin-top: 8px;
+}

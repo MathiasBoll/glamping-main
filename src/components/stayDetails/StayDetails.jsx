@@ -1,7 +1,9 @@
+// src/pages/stayDetails/StayDetails.jsx (eller hvor din fil ligger)
 import { useEffect, useState } from "react";
-import styles from "./stayDetails.module.css";
-import { useParams } from "react-router-dom"; // 👈 vigtig: react-router-dom
+import { useParams } from "react-router-dom";
 import PageHeader from "../../components/pageHeader/PageHeader";
+import Button from "../../components/button/Button";
+import styles from "./stayDetails.module.css";
 
 const StayDetails = () => {
   const [stay, setStay] = useState(null);
@@ -23,25 +25,53 @@ const StayDetails = () => {
     fetchStayById();
   }, [id]);
 
-  console.log(stay);
-
-  // Indtil data er hentet
   if (!stay) {
     return <p className={styles.stayDetails}>Indlæser ophold...</p>;
   }
 
   return (
-    <article className={styles.stayDetails}>
-      <PageHeader
-        titleOne={stay.title}      // fuld titel
-        button={false}             // ingen "Book nu" knap i hero, hvis du ikke vil
-        logo={false}               // intet hero-logo på single-siden
-        bgImg={stay.image}         // skift til den property du har i API'et (fx stay.hero_image)
-      />
+    <>
+      {/* HERO med stort billede og titel */}
+   
+<PageHeader
+  titleOne={stay.title}
+  button={false}
+  
+  bgImg={stay.image}
+/>
 
-      {/* Her kan du senere vise mere info om opholdet */}
-      {/* <p>{stay.description}</p> osv. */}
-    </article>
+      {/* TEAL INFO-SEKTIONEN UNDER HERO */}
+      <article className={styles.stayDetails}>
+        <h2 className={styles.title}>
+          {stay.subtitle || "Tag væk en weekend, med én du holder af"}
+        </h2>
+
+        <div className={styles.info}>
+          <p className={styles.desc}>{stay.description}</p>
+
+          {/* Opholdet indeholder – hvis API’et har en includes-liste */}
+          {Array.isArray(stay.includes) && stay.includes.length > 0 && (
+            <>
+              <p className={styles.includeTitle}>Opholdet indeholder:</p>
+              <ul className={styles.included}>
+                {stay.includes.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          {/* Pris */}
+          {stay.price && (
+            <p className={styles.price}>Pris {stay.price},-</p>
+          )}
+        </div>
+
+        <div className={styles.buttonWrap}>
+          <Button buttonText="Book nu" />
+        </div>
+      </article>
+    </>
   );
 };
 
