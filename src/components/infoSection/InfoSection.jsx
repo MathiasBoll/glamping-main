@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../button/Button";
 import styles from "./infoSection.module.css";
 import gitte from "../../assets/gitte.jpg";
 
-const InfoSection = () => {
+const InfoSection = ({
+  titleOverride,
+  bodyOverride,
+  ctaOverride,
+  showImage = true,
+  showButton = true,
+}) => {
+  const navigate = useNavigate();
+
   // Fallback-indhold hvis API fejler
   const fallback = {
     title: "Kom og prøv glamping hos Gitte",
@@ -25,7 +34,9 @@ vores wellnessaktiviteter.`,
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("https://glamping-rqu9j.ondigitalocean.app/about/");
+        const res = await fetch(
+          "https://glamping-rqu9j.ondigitalocean.app/about/"
+        );
         if (!res.ok) throw new Error("API-fejl");
 
         const json = await res.json();
@@ -47,17 +58,24 @@ vores wellnessaktiviteter.`,
     fetchData();
   }, []);
 
+  // Brug overrides hvis de er givet – ellers brug content fra API/fallback
+  const title = titleOverride ?? content.title;
+  const body = bodyOverride ?? content.body;
+  const ctaText = ctaOverride ?? content.ctaText;
+
   return (
     <section className={styles.infoSection}>
-      <h2>{content.title}</h2>
-      <p>{content.body}</p>
+      <h2>{title}</h2>
+      <p>{body}</p>
 
-      <img src={content.image} alt="Gitte" />
+      {showImage && <img src={content.image} alt="Gitte" />}
 
-      {/* link til /stays */}
-      <a href="/stays">
-        <Button buttonText={content.ctaText} />
-      </a>
+      {showButton && (
+        <Button
+          buttonText={ctaText}
+          onClick={() => navigate("/stays")}
+        />
+      )}
     </section>
   );
 };
