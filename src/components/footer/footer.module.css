@@ -1,64 +1,82 @@
+/* ============================================================================
+   FOOTER – GLOBAL LAYOUT OG STRUKTUR
+   ----------------------------------------------------------------------------
+   Denne CSS-fil styrer styling af hele footeren, som bruges på alle sider.
+   Farver, spacing og typografi matcher resten af designsystemet.
+   ============================================================================ */
+
 /* ===========================
-   Footer base
+   Footer base container
+   - Full-width baggrund
+   - Centrerer indholdet
    =========================== */
 .footer {
-  background-color: #2a4f57;
-  padding: 40px 0;
+  background-color: #2a4f57;       /* mørk-teal baggrund */
+  padding: 40px 0;                 /* luft top & bund */
   display: flex;
   justify-content: center;
   width: 100%;
   color: white;
 
-  font-family: 'Zen Loop', cursive, system-ui;
+  font-family: "Zen Loop", cursive, system-ui; /* brand-font */
 }
 
-/* Wrapper */
+/* Wrapper der holder footer-indholdet samlet og centreret */
 .footerInner {
   display: flex;
-  flex-direction: column;
+  flex-direction: column;          /* stabl layout (mobil-first) */
   align-items: center;
-  gap: 24px;
+  gap: 24px;                       /* mellemrum mellem sektioner */
 }
 
-/* ===========================
-   Social icons
-   =========================== */
+/* ============================================================================
+   SOCIALE IKONER
+   ============================================================================ */
+
+/* Container for de to sociale medie-ikoner */
 .footerSocial {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.5rem;                     /* luft mellem ikoner */
 }
 
+/* Individuelt ikon-link */
 .footerIcon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease; /* hover-animation */
 }
 
+/* Selve SVG-ikonerne */
 .footerIcon img {
   width: 50px;
   height: 50px;
-  filter: invert(100%); /* gør ikoner hvide */
+  filter: invert(100%);            /* gør standard-ikoner hvide */
 }
 
+/* Hover-effekt på sociale medier */
 .footerIcon:hover {
   transform: scale(1.08);
 }
 
-/* ===========================
-   Logo + Brand
-   =========================== */
+/* ============================================================================
+   BRANDING (Logo + Tekst)
+   ============================================================================ */
+
+/* Wrapper for logoet og teksten "Gittes Glamping" */
 .footerBrand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 10px;                       /* lille afstand mellem logo og tekst */
 }
 
+/* Footer-logoet */
 .footerLogo {
   width: 50px;
-  filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1); /* gør logoet hvidt uden at ændre filen */
 }
 
+/* Teksten ved siden af logoet */
 .footerText {
-  font-size: 40px;
+  font-size: 40px;                 /* stor, dekorativ font */
 }
