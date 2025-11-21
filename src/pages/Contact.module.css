@@ -255,3 +255,79 @@
   border-color: #fff;
   color: #fff;
 }
+
+/* ============================
+   GLOBAL BUTTON STYLE (CONTACT)
+   ============================ */
+
+.formButton,
+.deleteButton,
+.deleteAllButton {
+  display: inline-block;
+  padding: 18px 50px;
+  border-radius: 60px 0 60px 0;
+  border: 2px solid #b9c6c4;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-family: "Zen Loop", cursive;
+  font-size: 32px;
+  cursor: pointer;
+  text-align: center;
+  width: fit-content;
+  margin: 20px auto 0;
+  transition: 0.25s ease;
+}
+
+.formButton:hover,
+.deleteButton:hover,
+.deleteAllButton:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+/* IND SEND – midt på siden */
+.submitWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* "Se mine beskeder" */
+.msgLink {
+  display: inline-block;
+  padding: 14px 40px;
+  border-radius: 50px 0 50px 0;
+  border: 1px solid #b9c6c4;
+  background: transparent;
+  color: #b9c6c4;
+  font-family: "Zen Loop", cursive;
+  font-size: 28px;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.msgLink:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+  color: #fff;
+}
+
+/* MESSAGE PAGE BUTTONS */
+.msgDelete {
+  padding: 14px 30px;
+  border-radius: 50px 0 50px 0;
+  background: transparent;
+  border: 1px solid #b9c6c4;
+  color: #b9c6c4;
+  font-family: "Zen Loop", cursive;
+  font-size: 26px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.msgDelete:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+  color: #ffffff;
+}

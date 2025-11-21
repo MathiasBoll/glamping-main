@@ -270,9 +270,11 @@ const Contact = () => {
           </div>
 
           {/* Submit */}
-          <button type="submit" className="btn">
-            INDSEND
-          </button>
+          <div className={styles.submitWrap}>
+  <button type="submit" className={styles.formButton}>
+    INDSEND
+  </button>
+</div>
 
           {submitted && (
             <p className={styles.successText}>

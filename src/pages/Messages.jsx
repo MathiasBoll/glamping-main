@@ -64,7 +64,7 @@ const Messages = () => {
                   </span>
                   <button
                     type="button"
-                    className="btn-clear"
+                    className={styles.deleteAllButton}
                     onClick={handleDeleteAll}
                   >
                     Slet alle
@@ -90,7 +90,7 @@ const Messages = () => {
                   <div className={styles.actions}>
                     <button
                       type="button"
-                      className="btn-clear"
+                      className={styles.deleteButton}
                       onClick={() => handleDeleteOne(index)}
                     >
                       Slet
