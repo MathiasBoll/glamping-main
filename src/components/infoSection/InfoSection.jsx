@@ -4,6 +4,23 @@ import Button from "../button/Button";
 import styles from "./infoSection.module.css";
 import gitte from "../../assets/gitte.jpg";
 
+/**
+ * InfoSection
+ * ----------------------------------------------------------------------------
+ * Denne komponent bruges på forsiden til at vise en præsentation af Gitte
+ * og glamping-stedet. Den kan modtage "overrides", så indhold nemt kan ændres
+ * fra parent-komponenten, men forsøger først at hente rigtigt indhold fra API’et.
+ *
+ * PRIORITET FOR INDHOLD:
+ *   1) Overrides fra props
+ *   2) API-data (hvis det lykkes)
+ *   3) Fallback-tekst (hvis API fejler)
+ *
+ * Hooks:
+ *   - useState         → håndtering af API-data og fallback
+ *   - useEffect        → data-fetch ved load
+ *   - useNavigate      → routing til opholdssiden via CTA-knap
+ */
 const InfoSection = ({
   titleOverride,
   bodyOverride,
@@ -13,7 +30,12 @@ const InfoSection = ({
 }) => {
   const navigate = useNavigate();
 
-  // Fallback-indhold hvis API fejler
+  /**
+   * Default fallback-data
+   * --------------------------------------------------------------------------
+   * Bruges hvis API’et ikke svarer eller returnerer tomt indhold.
+   * Matcher teksten fra det udleverede design.
+   */
   const fallback = {
     title: "Kom og prøv glamping hos Gitte",
     body: `Vi er stolte af at byde dig velkommen til Gitte’s Glamping, hvor
@@ -26,11 +48,19 @@ arrangementer, der passer til alle aldre og interesser. Udforsk naturen,
 slap af ved bålet, del historier med nye venner, eller find indre ro med
 vores wellnessaktiviteter.`,
     ctaText: "Se vores ophold",
-    image: gitte,
+    image: gitte, // fallback-billede
   };
 
+  // content indeholder enten API-data eller fallback
   const [content, setContent] = useState(fallback);
 
+  /**
+   * Henter tekstindhold fra API’et ved første render
+   * --------------------------------------------------------------------------
+   * Hvis API’et fejler → bruges fallback-teksten.
+   * Hvis API’et lykkes → opdateres titel, body og CTA.
+   * Billedet kommer altid fra assets-mappen (ikke API).
+   */
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -47,7 +77,7 @@ vores wellnessaktiviteter.`,
             title: first.title || prev.title,
             body: first.body || prev.body,
             ctaText: first.ctaText || prev.ctaText,
-            image: prev.image,
+            image: prev.image, // API leverer ikke billeder
           }));
         }
       } catch (err) {
@@ -58,18 +88,23 @@ vores wellnessaktiviteter.`,
     fetchData();
   }, []);
 
-  // Brug overrides hvis de er givet – ellers brug content fra API/fallback
+  // Her styres hvilke værdier der faktisk vises (override > API > fallback)
   const title = titleOverride ?? content.title;
   const body = bodyOverride ?? content.body;
   const ctaText = ctaOverride ?? content.ctaText;
 
   return (
     <section className={styles.infoSection}>
+      {/* Titel i Zen Loop – kommer fra override/API/fallback */}
       <h2>{title}</h2>
+
+      {/* Beskrivende tekstfelt */}
       <p>{body}</p>
 
+      {/* Portræt-billede af Gitte (kan slås fra via prop) */}
       {showImage && <img src={content.image} alt="Gitte" />}
 
+      {/* Knap → sender bruger til /stays */}
       {showButton && (
         <Button
           buttonText={ctaText}
