@@ -12,7 +12,7 @@ import { FiCheckCircle } from "react-icons/fi";
 const STORAGE_KEY = "sentMessages";
 const SELECTED_STAY_KEY = "selectedStay";
 
-// TODO: ret denne URL til præcis det kontakt-endpoint I har fået udleveret
+// Kontakt-endpoint
 const CONTACT_API_URL = "https://glamping-rqu9j.ondigitalocean.app/contact";
 
 const namePattern = /^[A-Za-zÀ-ÖØ-öø-ÿ '\-]+$/;
@@ -107,21 +107,25 @@ const Contact = () => {
   const onSubmit = async (data) => {
     setSubmitted(false);
 
-    const entry = {
+    // payload til API
+    const payload = {
       name: data.name.trim(),
       email: data.email.trim(),
-      subject: categoryLabel || "Ingen emne",
+      category: categoryLabel || "Ingen emne",
       message: data.message.trim(),
-      ts: Date.now(),
     };
 
     // 1) POST til API
     try {
-      await fetch(CONTACT_API_URL, {
+      const res = await fetch(CONTACT_API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(entry),
+        body: JSON.stringify(payload),
       });
+
+      if (!res.ok) {
+        throw new Error("Kontakt-API fejlede");
+      }
     } catch (err) {
       console.error("Fejl ved afsendelse til API:", err);
       await Swal.fire({
@@ -134,19 +138,20 @@ const Contact = () => {
     }
 
     // 2) Gem til “Mine beskeder”
+    const entry = { ...payload, ts: Date.now() };
     const list = readMessages();
     list.push(entry);
     writeMessages(list);
     setMsgCount(list.length);
 
     // 3) Personlig tak-besked
-    setSuccessName(data.name.trim());
+    setSuccessName(payload.name);
     setSubmitted(true);
 
     // 4) Nulstil formular
     reset({ name: "", email: "", category: "", message: "" });
 
-    // 5) SweetAlert-modal (kravet om modal feedback)
+    // 5) SweetAlert-modal
     await Swal.fire({
       icon: "success",
       title: "Tak for din besked!",
@@ -262,7 +267,7 @@ const Contact = () => {
             )}
           </div>
 
-          {/* Submit-knap i jeres design */}
+          {/* Submit-knap */}
           <div className={styles.submitWrap}>
             <button
               type="submit"
@@ -273,7 +278,7 @@ const Contact = () => {
             </button>
           </div>
 
-          {/* Personlig tak-boks under formularen */}
+          {/* Personlig tak-boks */}
           {submitted && (
             <div className={styles.successBox}>
               <FiCheckCircle className={styles.successIcon} />
