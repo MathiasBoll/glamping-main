@@ -7,7 +7,8 @@ import styles from "./pageHeader.module.css";
 import homeBg from "../../assets/image_00.jpg";
 import staysBg from "../../assets/image_01.jpg";
 import activitiesBg from "../../assets/image_02.jpg";
-import contactBg from "../../assets/image_03.jpg"; // 👈 hero til kontakt + beskeder
+import contactBg from "../../assets/image_03.jpg"; // hero til kontakt + beskeder
+import logoMark from "/logo.png";
 
 // Basis-config afhængigt af side-type
 const HEADER_CONFIG = {
@@ -37,14 +38,14 @@ const HEADER_CONFIG = {
     titleOne: "Kontakt",
     titleTwo: "Gitte",
     showLogo: false,
-    showButton: false, // 👈 ingen Book nu
+    showButton: false, // ingen Book nu
   },
   messages: {
-    bgImg: contactBg,          // 👈 samme billede som kontakt
+    bgImg: contactBg, // samme billede som kontakt
     titleOne: "Mine",
     titleTwo: "beskeder",
     showLogo: false,
-    showButton: false,         // 👈 ingen Book nu
+    showButton: false, // ingen Book nu
   },
 };
 
@@ -71,7 +72,7 @@ function getPageKey(pathname) {
   return "home";
 }
 
-const PageHeader = ({ logo, titleOne, titleTwo, button, bgImg }) => {
+const PageHeader = ({ titleOne, titleTwo, button, bgImg }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -100,11 +101,18 @@ const PageHeader = ({ logo, titleOne, titleTwo, button, bgImg }) => {
       className={styles.header}
       style={{ backgroundImage: `url(${usedBg})` }}
     >
-      {conf.showLogo && logo && <img src={logo} alt="logo" />}
+      {/* Logo kun på forsiden */}
+      {conf.showLogo && (
+        <img
+          src={logoMark}
+          alt="Gittes Glamping"
+          className={styles.heroLogo}
+        />
+      )}
 
-      <h1>
+      <h1 className={styles.title}>
         {finalTitleOne}
-        {finalTitleTwo && <span>{finalTitleTwo}</span>}
+        {finalTitleTwo && <span className={styles.titleTwo}>{finalTitleTwo}</span>}
       </h1>
 
       {showButton && (
