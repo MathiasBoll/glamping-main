@@ -1,31 +1,37 @@
-/* src/pages/LikedActivities.module.css */
-
+/* ============================================================
+   SIDENS GRUNDLAYOUT
+   - Baggrundsfarve og minimumshøjde så siden fylder hele skærmen
+   ============================================================ */
 .page {
   background-color: #cfd3ce;
   min-height: 100vh;
 }
 
-/* HERO */
+/* ============================================================
+   HERO-SEKTION
+   - Viser hero-billede + overlay-tekst (titel + antal)
+   ============================================================ */
 .hero {
-  position: relative;
+  position: relative;      /* gør det muligt at placere overlay ovenpå billedet */
   width: 100%;
-  overflow: hidden;
+  overflow: hidden;        /* skjuler evt. overflow fra store billeder */
 }
 
 .hero img {
   width: 100%;
-  height: 450px;
-  object-fit: cover;
+  height: 450px;           /* samme højde som aktiviteter/stays hero */
+  object-fit: cover;       /* beskær billedet pænt */
   object-position: center;
   display: block;
 }
 
+/* Overlay-laget der ligger oven på hero-billedet */
 .heroOverlay {
   position: absolute;
-  inset: 0;
+  inset: 0;                /* top: 0; right: 0; bottom: 0; left: 0 */
   display: grid;
   place-content: start center;
-  padding-top: 150px;
+  padding-top: 150px;      /* placerer teksten lidt nede af billedet */
   text-align: center;
   color: #ffffff;
   font-family: "Zen Loop", cursive;
@@ -42,16 +48,20 @@
   margin-bottom: 4px;
 }
 
+/* Stor counter med antal liked aktiviteter */
 .heroCount {
   font-size: 40px;
 }
 
-/* LISTE */
+/* ============================================================
+   LISTE-SEKTION
+   - Container under hero med alle ActivityCards
+   ============================================================ */
 .listSection {
-  padding: 0 0 80px;
+  padding: 0 0 80px;       /* luft i bunden så siden “ånder” */
 }
 
-/* Tom liste-tekst */
+/* Tekst der vises når listen er tom */
 .empty {
   padding: 40px 24px 80px;
   text-align: center;
