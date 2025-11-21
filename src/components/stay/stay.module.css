@@ -1,56 +1,76 @@
-/* Hele kortet */
+/* ============================================================
+   STAY-KORT (bruges på /stays-siden)
+   Matcher designet fra layoutet:
+   - Beige top med skrå hjørner
+   - Billede i midten
+   - Teal bund med knap
+   Layoutet følger samme struktur som aktiviteter.
+   ============================================================ */
+
+/* Hele kortets wrapper */
 .stay {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  /* centrér kortet og giv luft mellem dem */
+  /* Centrer kort + luft mellem hvert kort */
   margin: 80px auto 0;
 
-  /* mobil: smalt kort */
+  /* Mobil: vis smal version af kortet */
   width: min(100%, 360px);
 
   background: transparent;
 }
 
-/* Beige top-boks med titel + info */
+/* ============================================================
+   TOPSEKTION – beige header med titel + facts
+   ============================================================ */
 .caption {
   background-color: #c6b497;
   color: #fff;
   text-align: center;
+
   font-family: "Zen Loop", cursive;
   font-weight: 200;
 
-  border-radius: 66px 0 66px 0;
+  border-radius: 66px 0 66px 0;    /* skrå hjørner efter design */
   padding: 24px 16px;
-
   width: 100%;
+
+  /* Drop shadow som i resten af projektet */
   filter: drop-shadow(0px 3px 15px #00000029);
 }
 
+/* Store primære titel */
 .title {
   font-size: 32px;
   line-height: 1.1;
 }
 
+/* Underlinjer: personer + pris */
 .titleTwo {
   font-size: 18px;
   line-height: 1.2;
 }
 
-/* Billedet i midten */
+/* ============================================================
+   BILLEDE – ligger i midten og fylder hele bredden
+   ============================================================ */
 .image {
   width: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: cover;     /* Ens beskæring af billeder */
 }
 
-/* Nederste teal bar med knap */
+/* ============================================================
+   BUNDSEKTION – teal bar med “Læs mere”-knap
+   ============================================================ */
 .bottomBar {
   background-color: #839b97;
   width: 100%;
-  border-radius: 0 0 66px 0;
+  border-radius: 0 0 66px 0;      /* skråt hjørne nederst */
+
   filter: drop-shadow(0px 3px 15px #00000029);
 
   display: flex;
@@ -58,29 +78,31 @@
   padding: 22px 16px;
 }
 
-/* ========== RESPONSIVT LAYOUT ========== */
+/* ============================================================
+   RESPONSIVE BREAKPOINTS
+   Gør kortene større på tablet og desktop
+   ============================================================ */
 
-/* Tablet – kortet bliver bredere */
+/* Tablet – gør kortet bredere */
 @media (min-width: 768px) {
   .stay {
     width: min(100%, 620px);
   }
 }
 
-/* Laptop/desktop – kortet fylder godt i bredden */
+/* Laptop/desktop */
 @media (min-width: 1200px) {
   .stay {
     width: min(100%, 780px);
   }
 
   .image {
-    /* lidt højere billede på store skærme */
+    /* Gør billedet højere for at matche designet */
     max-height: 460px;
   }
 }
 
-/* Giver luft under sidste stay-kort */
+/* Ekstra luft under det sidste stay-kort på siden */
 .stay:last-child {
   margin-bottom: 80px;
 }
-
