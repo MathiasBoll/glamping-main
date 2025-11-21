@@ -1,0 +1,134 @@
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Zen+Loop:ital@0;1&display=swap");
+
+/* Main container – blå baggrund, luft og standard font */
+.contactMain {
+  position: relative;
+  background-color: #34626c;
+  padding: 60px 20px 80px;
+  color: #ffffff;
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+/* Øverste bue i venstre hjørne (overlay-effekt) */
+.contactMain::before {
+  content: "";
+  position: absolute;
+  top: -56px;
+  left: 0;
+  width: 100%;
+  height: 68px;
+  background: #34626c;
+  border-top-left-radius: 60px;
+  pointer-events: none;
+}
+
+/* Intro-tekst boks */
+.contactIntro {
+  background-color: #34626c;
+  padding: 20px;
+  border-radius: 60px 0 60px 0;
+  margin-bottom: 30px;
+}
+
+.contactIntro h2 {
+  font-family: "Zen Loop", cursive;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #b9c6c4;
+  text-align: center;
+}
+
+.contactIntro p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: center;
+  color: #ffffff;
+}
+
+/* Formularen */
+.contactForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Wrapper til felter */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contactForm input,
+.contactForm select,
+.contactForm textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 20px;
+  border: 1px solid #b9c6c4;
+  background: transparent;
+  color: #ffffff;
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+.contactForm input::placeholder,
+.contactForm textarea::placeholder {
+  color: #b9c6c4;
+}
+
+/* Fejl */
+.fieldError {
+  color: #ffe3e3;
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+/* Fokus-effekt */
+.contactForm input:focus,
+.contactForm select:focus,
+.contactForm textarea:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.35);
+  outline-offset: 1px;
+}
+
+/* Success-besked */
+.successText {
+  margin-top: 16px;
+  text-align: center;
+}
+
+/* Link-knap "Se mine beskeder" */
+.contactTools {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.msgLink {
+  display: inline-block;
+  padding: 14px 40px;
+  border-radius: 50px 0 50px 0;
+  border: 1px solid #b9c6c4;
+  background: transparent;
+  color: #b9c6c4;
+  font-family: "Zen Loop", cursive;
+  font-size: 1.6rem;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.msgLink:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+/* På mobil: centrér linket */
+@media (max-width: 600px) {
+  .contactTools {
+    justify-content: center;
+  }
+}

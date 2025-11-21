@@ -6,7 +6,8 @@ import Stays from "./pages/Stays.jsx";
 import Activities from "./pages/Activities.jsx";
 import ActivityDetails from "./pages/ActivityDetails.jsx";
 import LikedActivities from "./pages/LikedActivities.jsx";
-
+import Contact from "./pages/Contact.jsx";
+import Messages from "./pages/Messages.jsx";
 import StayDetails from "./components/stayDetails/StayDetails";
 import Navigation from "./components/navigation/Navigation";
 import Footer from "./components/footer/Footer";
@@ -19,6 +20,8 @@ function App() {
     { path: "/activities", element: <Activities /> },
     { path: "/activity/:id", element: <ActivityDetails /> },
     { path: "/liked", element: <LikedActivities /> }, // 🔹 NY
+    { path: "/contact", element: <Contact /> },
+    { path: "/messages", element: <Messages /> },
   ]);
 
   return (

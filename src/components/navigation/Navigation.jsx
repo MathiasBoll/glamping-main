@@ -1,3 +1,4 @@
+// src/components/navigation/Navigation.jsx
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import styles from "./navigation.module.css";
@@ -16,6 +17,7 @@ const Navigation = () => {
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
+  // Lås scroll når menuen er åben
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
@@ -23,6 +25,7 @@ const Navigation = () => {
     };
   }, [isOpen]);
 
+  // ESC lukker menuen
   useEffect(() => {
     if (!isOpen) return;
 
@@ -121,7 +124,6 @@ const Navigation = () => {
           Aktiviteter
         </NavLink>
 
-        {/* 🔹 NYT PUNKT: Min liste */}
         <NavLink
           to="/liked"
           className={({ isActive }) =>
@@ -130,6 +132,27 @@ const Navigation = () => {
           onClick={closeMenu}
         >
           Min liste
+        </NavLink>
+
+        <NavLink
+          to="/contact"
+          className={({ isActive }) =>
+            `${styles.menuLink} ${isActive ? styles.menuLinkActive : ""}`
+          }
+          onClick={closeMenu}
+        >
+          Kontakt
+        </NavLink>
+
+        {/* 🔹 NYT PUNKT: Mine beskeder */}
+        <NavLink
+          to="/messages"          // skift evt. til den path du bruger
+          className={({ isActive }) =>
+            `${styles.menuLink} ${isActive ? styles.menuLinkActive : ""}`
+          }
+          onClick={closeMenu}
+        >
+          Mine beskeder
         </NavLink>
       </nav>
     </>
