@@ -22,7 +22,7 @@ const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
   const [msgCount, setMsgCount] = useState(0);
 
-  // Helper: læs / skriv besked-listen
+  // Helpers til besked-liste
   const readMessages = () =>
     JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
 
@@ -39,22 +39,23 @@ const Contact = () => {
     try {
       const stored = localStorage.getItem(SELECTED_STAY_KEY);
       if (!stored) return;
+
       const stay = JSON.parse(stored);
       if (!stay || !stay.id || !stay.title) return;
 
-      // vi laver en “syntetisk kategori”-værdi
       setForm((prev) => ({
         ...prev,
         category: `stay:${stay.id}|${stay.title}`,
       }));
 
+      // kun én gang – derefter fjernes den
       localStorage.removeItem(SELECTED_STAY_KEY);
     } catch {
-      // ignorer fejl
+      // ignorer JSON-fejl
     }
   }, []);
 
-  // Udled “viste” kategori-tekst (bruges når vi gemmer til messages)
+  // Pæn label-tekst til category (bruges når vi gemmer)
   const categoryLabel = useMemo(() => {
     if (!form.category) return "";
     if (form.category.startsWith("stay:")) {
@@ -67,7 +68,7 @@ const Contact = () => {
     return form.category;
   }, [form.category]);
 
-  // Validering af enkelt felt
+  // Validering af ét felt
   const validateField = (name, value) => {
     const v = value.trim();
 
@@ -96,9 +97,9 @@ const Contact = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setForm((prev) => ({ ...prev, [name]: value }));
 
-    // live-validering
     setErrors((prev) => ({
       ...prev,
       [name]: validateField(name, value),
@@ -124,13 +125,14 @@ const Contact = () => {
     });
     setErrors(newErrors);
 
- // Hvis der er fejl → fokusér første felt med fejl
-const firstErrorKey = Object.keys(newErrors)[0];
-if (firstErrorKey) {
-  const el = document.querySelector(`[name="${firstErrorKey}"]`);
-  if (el && typeof el.focus === "function") el.focus();
-  return;
-}
+    // Hvis der er fejl → fokusér første felt med fejl
+    const firstErrorKey = Object.keys(newErrors)[0];
+    if (firstErrorKey) {
+      const el = document.querySelector(`[name="${firstErrorKey}"]`);
+      if (el && typeof el.focus === "function") el.focus();
+      return;
+    }
+
     // Ingen fejl → gem besked
     const entry = {
       name: form.name.trim(),
@@ -151,12 +153,8 @@ if (firstErrorKey) {
 
   return (
     <>
-      {/* HERO – genbruger PageHeader */}
-      <PageHeader
-        titleOne="Kontakt"
-        titleTwo="Gitte"
-        bgImg={null} // PageHeader vælger selv kontakt-hero via path
-      />
+      {/* HERO – bruger PageHeader, som vælger kontakt-hero via path */}
+      <PageHeader titleOne="Kontakt" titleTwo="Gitte" bgImg={null} />
 
       <main className={styles.contactMain}>
         <section className={styles.contactIntro}>
@@ -217,7 +215,7 @@ if (firstErrorKey) {
             )}
           </div>
 
-          {/* Kategori */}
+          {/* Kategori (inkl. auto-fyldt ophold) */}
           <div className={styles.field}>
             <label className="sr-only" htmlFor="cf-cat">
               Hvad drejer henvendelsen sig om?
@@ -228,18 +226,21 @@ if (firstErrorKey) {
               value={form.category}
               onChange={handleChange}
               onBlur={handleBlur}
+              required
             >
               {!form.category && (
                 <option value="">
                   Hvad drejer henvendelsen sig om?
                 </option>
               )}
-              {/* hvis der tidligere var valgt ophold → bevar den som option */}
+
+              {/* hvis valgt ophold → tilføj som option */}
               {form.category.startsWith("stay:") && (
                 <option value={form.category}>
                   {categoryLabel || "Valgt ophold"}
                 </option>
               )}
+
               <option value="booking">Booking</option>
               <option value="spørgsmål">Generelt spørgsmål</option>
               <option value="andet">Andet</option>

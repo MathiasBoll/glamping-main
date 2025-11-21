@@ -132,3 +132,126 @@
     justify-content: center;
   }
 }
+
+/* basic layout – hvis du allerede har noget tilsvarende, behold det */
+.contactMain {
+  background-color: #34626c;
+  padding: 60px 20px 80px;
+  color: #fff;
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+.contactSection {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contactIntro {
+  padding: 20px;
+  border-radius: 60px 0 60px 0;
+  margin-bottom: 30px;
+}
+
+.contactIntro h2 {
+  font-family: "Zen Loop", cursive;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #b9c6c4;
+}
+
+.contactIntro p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* form + felter */
+.contactForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contactForm input,
+.contactForm select,
+.contactForm textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 20px;
+  border: 1px solid #b9c6c4;
+  background: transparent;
+  color: #fff;
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+.contactForm input::placeholder,
+.contactForm textarea::placeholder {
+  color: #b9c6c4;
+}
+
+/* select dropdown */
+.contactForm select {
+  appearance: none;
+}
+
+.contactForm select option {
+  background: #ffffff;
+  color: #0f2b2f;
+}
+
+.fieldError {
+  color: #ffe3e3;
+  font-size: 0.85rem;
+}
+
+.submitBtn {
+  align-self: center;
+  border-radius: 50px 0 50px 0;
+  padding: 20px 60px;
+  color: white;
+  border: none;
+  background-color: #839b97;
+  font-family: "Zen Loop";
+  font-size: 2rem;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.contactSuccess {
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* "Se mine beskeder (0)" */
+.contactTools {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.msgLink {
+  display: inline-block;
+  padding: 14px 40px;
+  border-radius: 50px 0 50px 0;
+  border: 1px solid #b9c6c4;
+  background: transparent;
+  color: #b9c6c4;
+  font-family: "Zen Loop", cursive;
+  font-size: 1.6rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.msgLink:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+  color: #fff;
+}
