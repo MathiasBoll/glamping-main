@@ -1,39 +1,22 @@
 // src/pages/LikedActivities.jsx
-import { useEffect, useState } from "react";
 import ActivityCard from "../components/activities/ActivityCard";
 import styles from "./LikedActivities.module.css";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
-// hero-billede (bål med skumfidus)
 import likedHeroImg from "../assets/image_05.jpg";
 
 const STORAGE_KEY = "likedList";
 
 const LikedActivities = () => {
-  const [liked, setLiked] = useState([]);
+  // useLocalStorage så vi opfylder kravet om hook + persistering
+  const [liked, setLiked] = useLocalStorage(STORAGE_KEY, []);
 
-  const loadLiked = () => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      const parsed = raw ? JSON.parse(raw) : [];
-      setLiked(Array.isArray(parsed) ? parsed : []);
-    } catch (err) {
-      console.error("[LikedActivities] Kunne ikke læse likedList", err);
-      setLiked([]);
-    }
+  const count = Array.isArray(liked) ? liked.length : 0;
+
+  // Bliver kaldt fra ActivityCard med den nye liste
+  const handleToggleLike = (nextList) => {
+    setLiked(nextList);
   };
-
-  useEffect(() => {
-    loadLiked();
-
-    // hvis du har flere tabs åbne, opdater når localStorage ændres
-    const handleStorage = (e) => {
-      if (e.key === STORAGE_KEY) loadLiked();
-    };
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
-
-  const count = liked.length;
 
   return (
     <article className={styles.page}>
@@ -58,7 +41,7 @@ const LikedActivities = () => {
             <ActivityCard
               key={activity._id}
               activity={activity}
-              onToggleLike={loadLiked} // opdater listen når man unliker
+              onToggleLike={handleToggleLike}
             />
           ))
         )}

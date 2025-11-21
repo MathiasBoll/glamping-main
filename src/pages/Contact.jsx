@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import PageHeader from "../components/pageHeader/PageHeader";
 import styles from "./Contact.module.css";
 
+import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,12 +13,12 @@ import { FiCheckCircle } from "react-icons/fi";
 const STORAGE_KEY = "sentMessages";
 const SELECTED_STAY_KEY = "selectedStay";
 
-// Kontakt-endpoint
+// Kontakt-endpoint fra opgaven
 const CONTACT_API_URL = "https://glamping-rqu9j.ondigitalocean.app/contact";
 
 const namePattern = /^[A-Za-zÀ-ÖØ-öø-ÿ '\-]+$/;
 
-// === Yup-schema til validering ===
+// Yup-schema til validering
 const schema = yup.object({
   name: yup
     .string()
@@ -73,7 +74,7 @@ const Contact = () => {
     setMsgCount(readMessages().length);
   }, []);
 
-  // Hydrate dropdown fra evt. valgt ophold (selectedStay)
+  // Hydrate dropdown fra evt. valgt ophold
   useEffect(() => {
     try {
       const stored = localStorage.getItem(SELECTED_STAY_KEY);
@@ -107,7 +108,6 @@ const Contact = () => {
   const onSubmit = async (data) => {
     setSubmitted(false);
 
-    // payload til API
     const payload = {
       name: data.name.trim(),
       email: data.email.trim(),
@@ -158,6 +158,9 @@ const Contact = () => {
       text: "Vi vender tilbage hurtigst muligt.",
       confirmButtonColor: "#839B97",
     });
+
+    // 6) Toast feedback
+    toast.success("Din besked er sendt ✉️");
   };
 
   return (

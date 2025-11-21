@@ -2,13 +2,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./activities.module.css";
-import { useLikedList } from "../../hooks/useLikedList"; // 👈 hook med useLocalStorage
+import { useLikedList } from "../../hooks/useLikedList";
 
 const ActivityCard = ({ activity, onToggleLike }) => {
   const navigate = useNavigate();
   const [showMore, setShowMore] = useState(false);
 
-  // bruger global liked-list via useLocalStorage
+  // global liked-liste via useLocalStorage-hook
   const { likedList, isLiked, toggleLike } = useLikedList();
   const liked = isLiked(activity._id);
 
@@ -16,7 +16,7 @@ const ActivityCard = ({ activity, onToggleLike }) => {
     // opdater localStorage via hook
     toggleLike(activity);
 
-    // giv evt. besked til forælder (fx LikedActivities)
+    // giv besked til forælder (LikedActivities) om ny liste
     if (typeof onToggleLike === "function") {
       const next = liked
         ? likedList.filter((a) => a._id !== activity._id)
