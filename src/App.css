@@ -1,36 +1,46 @@
+/* Importerer projektets to primære skrifttyper:
+   - Zen Loop (håndskrift → bruges til overskrifter)
+   - Nanum Gothic (læsevenlig brødtekst)
+*/
 @import url("https://fonts.googleapis.com/css2?family=Zen+Loop:ital@0;1&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap");
 
+/* RESET: Fjerner default margin/padding og sikrer ens box-sizing */
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
+/* Standard container – bruges på flere sider til simple layouts */
 .container {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
+/* Wrapper omkring hele appen */
 .app {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100vh;         /* sikrer at appen fylder hele skærmen */
   display: flex;
   flex-direction: column;
 }
 
+/* Main skal fylde alt mellem header og footer */
 main {
   flex: 1;
 }
 
+/* Basis-styling for html + body */
 body,
 html {
-  color: white;
-  background-color: #ced3cd;
-  font-family: "Nanum Gothic", sans-serif;
+  color: white;                         /* standard tekstfarve */
+  background-color: #ced3cd;            /* neutral baggrundsfarve */
+  font-family: "Nanum Gothic", sans-serif; /* global brødtekst-font */
 }
 
+/* Alle overskrifter bruger Zen Loop for glamping-looket */
 h1,
 h2,
 h3,
@@ -41,6 +51,8 @@ h5 {
   line-height: 60px;
 }
 
+/* Rod-element hvor React-mounting sker.
+   Centerer indhold som default. */
 #root {
   text-align: center;
 }
