@@ -1,22 +1,28 @@
 import { useRoutes } from "react-router";
 import "./App.css";
-import Home from "./pages/Home";
-import Stays from "./pages/Stays";
+
+import Home from "./pages/Home.jsx";
+import Stays from "./pages/Stays.jsx";
+
+import Activities from "./pages/Activities.jsx";
+import ActivityDetails from "./pages/ActivityDetails.jsx";
+
+import StayDetails from "./components/stayDetails/StayDetails";
 import Navigation from "./components/navigation/Navigation";
 import Footer from "./components/footer/Footer";
-import StayDetails from "./components/stayDetails/StayDetails";
 
-// Parent/forældre komponent - Den 'hoved'-komponent der styrer visninger af andre komponenter
 function App() {
-  /* Vha react-router definerer vi hvilke komponenter der hører til hvilke paths */
-  const routes = useRoutes([
-    { path: "/", element: <Home /> },
-    { path: "/stays", element: <Stays /> },
-    { path: "/stay/:id", element: <StayDetails /> },
-  ]);
+ const routes = useRoutes([
+  { path: "/", element: <Home /> },
+  { path: "/stays", element: <Stays /> },
+  { path: "/stay/:id", element: <StayDetails /> },
+  { path: "/activities", element: <Activities /> },
+  { path: "/activity/:id", element: <ActivityDetails /> },
+]);
+
 
   return (
-    <div className='app'>
+    <div className="app">
       <Navigation />
       <main>{routes}</main>
       <Footer />

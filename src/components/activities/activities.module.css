@@ -1,0 +1,304 @@
+/* src/components/activities/activities.module.css */
+
+/* ===== GENEREL BAGGRUND ===== */
+.activityContainer {
+  background-color: #cfd3ce;
+  padding-bottom: 80px;
+}
+
+/* ==================== HERO – LISTE-SIDE ==================== */
+
+.activityHero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* kano-hero */
+.activityHero img {
+  width: 100%;
+  height: 450px;           /* samme højde-følelse som de andre heroer */
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* "Aktiviteter" oven på billedet */
+.activityHeroTitle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 450px;           /* matcher billedet */
+  display: grid;
+  place-content: start center;
+  padding-top: 150px;
+
+  font-family: "Zen Loop", cursive;
+  font-weight: 200;
+  font-size: 80px;
+  color: #ffffff;
+}
+
+/* blå tekstboks under hero */
+.activityHeroDesc {
+  background-color: #34626c;
+  border-radius: 70px 0 0 0;
+  margin-top: -70px;       /* overlapper lidt med hero, ligesom på ophold */
+  padding: 80px 24px 60px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.activityHeroDesc h2 {
+  font-family: "Zen Loop", cursive;
+  font-weight: 200;
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.activityHeroDesc p {
+  font-family: "Nanum Gothic", sans-serif;
+  font-size: 14px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ==================== KORT-LISTE (som stays-kort) ==================== */
+
+.activityCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: 80px auto 0;           /* samme luft som stay-kortene */
+  width: min(100%, 360px);
+  background: transparent;
+}
+
+/* Beige top med titel */
+.activityTitle {
+  width: 100%;
+  background-color: #c6b497;
+  color: #ffffff;
+  border-radius: 66px 0 66px 0;
+  padding: 24px 16px;
+  font-family: "Zen Loop", cursive;
+  font-size: 32px;
+  font-weight: 200;
+
+  /* fix center */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  position: relative;
+  filter: drop-shadow(0px 3px 15px #00000029);
+}
+
+
+/* Hjerte-knap inde i den beige bar */
+.likeBtn {
+  position: absolute;
+  top: 18px;
+  right: 24px;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  padding: 0;
+  border-radius: 8px 0 8px 0;
+  background-color: #839b97;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.likeBtn svg path {
+  fill: #b9c6c4;
+}
+
+/* når liked */
+.liked svg path {
+  fill: #ffffff;
+}
+
+/* Billede i midten */
+.activityImg {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Teal-boks nederst */
+.activityInfo {
+  width: 100%;
+  background-color: #34626c;
+  border-radius: 0 0 66px 0;
+  filter: drop-shadow(0px 3px 15px #00000029);
+  padding: 22px 24px 26px;
+  font-family: "Zen Loop", cursive;
+  color: #ffffff;
+  text-align: left;
+  position: relative;
+}
+
+.activityDay,
+.activityTime {
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+/* Læs mere-knap (stor bue, som på stay) */
+.activityReadmore {
+  margin-top: 16px;
+  width: 100%;
+  height: 46px;
+  border-radius: 66px 0 66px 0;
+  border: 2px solid #ffffff;
+  background: transparent;
+  color: #ffffff;
+  font-family: "Zen Loop", cursive;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Teksten der foldes ud */
+.activityReadmoreText {
+  display: none;
+  margin-top: 16px;
+  font-family: "Nanum Gothic", sans-serif;
+  font-size: 13px;
+}
+
+.activityReadmoreTextShow {
+  display: block;
+}
+
+/* "Se Aktivitet" – lille beige knap nederst th. */
+.singlePageOpen {
+  position: absolute;
+  right: 24px;
+  bottom: 20px;
+  border: 0;
+  padding: 4px 14px;
+  border-radius: 20px 0 20px 0;
+  background-color: #c6b497;
+  color: #ffffff;
+  font-family: "Zen Loop", cursive;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ekstra luft under sidste kort */
+.activityCard:last-child {
+  margin-bottom: 80px;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .activityCard {
+    width: min(100%, 620px);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1200px) {
+  .activityCard {
+    width: min(100%, 780px);
+  }
+
+  .activityImg {
+    max-height: 460px;
+  }
+}
+
+/* ==================== SINGLE VIEW: /activity/:id ==================== */
+
+/* Baggrund på hele siden */
+.singlePage {
+  background-color: #cfd3ce;
+}
+
+/* Wrapper for det ene store kort */
+.activitySingle {
+  width: min(100%, 360px);
+  margin: -60px auto 80px;       /* overlapper en smule med hero */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Beige top-boks med aktivitetens titel */
+.singleTitle {
+  width: 100%;
+  background-color: #c6b498;
+  color: #ffffff;
+  font-family: "Zen Loop", cursive;
+  font-weight: 200;
+  font-size: 32px;
+  line-height: 1.1;
+  text-align: center;
+
+  border-radius: 66px 0 66px 0;
+  padding: 24px 16px;
+  filter: drop-shadow(0px 3px 15px #00000029);
+}
+
+/* Billedet i midten – stort på single */
+.singleImage {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Nederste teal-boks med tekst */
+.singleInfo {
+  width: 100%;
+  background-color: #34626c;
+  color: #ffffff;
+  border-radius: 0 0 66px 0;
+  filter: drop-shadow(0px 3px 15px #00000029);
+
+  padding: 32px 24px;
+  box-sizing: border-box;
+
+  font-family: "Nanum Gothic", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Dato + tid */
+.singleDay,
+.singleTime {
+  font-family: "Zen Loop", cursive;
+  font-size: 24px;
+  margin: 0 0 4px;
+}
+
+/* Beskrivelsen */
+.singleDescription {
+  margin-top: 16px;
+}
+
+/* Loader/fejl-tekst */
+.singleMessage {
+  text-align: center;
+  padding: 40px 16px 80px;
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+/* Større kort på tablet/desktop – samme logik som stays-kortene */
+@media (min-width: 768px) {
+  .activitySingle {
+    width: min(100%, 620px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .activitySingle {
+    width: min(100%, 780px);
+  }
+}

@@ -10,14 +10,12 @@ const Navigation = () => {
   const menuRef = useRef(null);
   const burgerRef = useRef(null);
 
-  // Forside? → ingen logo i topbaren (kun burger)
   const isHome = pathname === "/";
 
   const openMenu = () => setIsOpen(true);
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
-  // Lås body-scroll når menuen er åben
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
@@ -25,7 +23,6 @@ const Navigation = () => {
     };
   }, [isOpen]);
 
-  // ESC lukker menuen
   useEffect(() => {
     if (!isOpen) return;
 
@@ -43,10 +40,11 @@ const Navigation = () => {
 
   return (
     <>
-      {/* TOPBAR (logo + burger) */}
-      <header className={`${styles.topbar} ${pathname === "/" ? styles.homeNav : ""}`}
->
-
+      <header
+        className={`${styles.topbar} ${
+          pathname === "/" ? styles.homeNav : ""
+        }`}
+      >
         {!isHome && (
           <NavLink
             to="/"
@@ -76,14 +74,12 @@ const Navigation = () => {
         </button>
       </header>
 
-      {/* OVERLAY-MENU */}
       <nav
         id="mobileMenu"
         ref={menuRef}
         className={`${styles.mobileMenu} ${isOpen ? styles.active : ""}`}
         aria-hidden={!isOpen}
         onClick={(e) => {
-          // klik på baggrunden (ikke på links/indhold) → luk
           if (e.target === e.currentTarget) closeMenu();
         }}
       >
@@ -113,6 +109,17 @@ const Navigation = () => {
           onClick={closeMenu}
         >
           Ophold
+        </NavLink>
+
+        {/* 🔹 nyt menupunkt */}
+        <NavLink
+          to="/activities"
+          className={({ isActive }) =>
+            `${styles.menuLink} ${isActive ? styles.menuLinkActive : ""}`
+          }
+          onClick={closeMenu}
+        >
+          Aktiviteter
         </NavLink>
       </nav>
     </>
