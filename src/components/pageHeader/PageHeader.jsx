@@ -76,9 +76,14 @@ const HEADER_CONFIG = {
 function getPageKey(pathname) {
   if (pathname === "/" || pathname === "/index") return "home";
 
-  if (pathname.startsWith("/stays") || pathname.startsWith("/ophold")) {
+  if (
+   pathname.startsWith("/stays") ||
+   pathname.startsWith("/stay") ||       
+   pathname.startsWith("/ophold")
+  ) {
     return "stays";
   }
+
 
   if (pathname.startsWith("/activities") || pathname.startsWith("/aktiviteter")) {
     return "activities";
