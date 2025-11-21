@@ -1,41 +1,26 @@
 // src/components/activities/ActivityCard.jsx
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./activities.module.css";
-
-const STORAGE_KEY = "likedList";
+import { useLikedList } from "../../hooks/useLikedList"; // 👈 hook med useLocalStorage
 
 const ActivityCard = ({ activity, onToggleLike }) => {
   const navigate = useNavigate();
-  const [isLiked, setIsLiked] = useState(false);
   const [showMore, setShowMore] = useState(false);
 
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    setIsLiked(saved.some((a) => a._id === activity._id));
-  }, [activity._id]);
+  // bruger global liked-list via useLocalStorage
+  const { likedList, isLiked, toggleLike } = useLikedList();
+  const liked = isLiked(activity._id);
 
-  const toggleLike = () => {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    let next;
+  const handleLikeClick = () => {
+    // opdater localStorage via hook
+    toggleLike(activity);
 
-    if (isLiked) {
-      next = saved.filter((a) => a._id !== activity._id);
-    } else {
-      const exists = saved.some((a) => a._id === activity._id);
-      next = exists ? saved : [...saved, activity];
-    }
-
-    if (next.length) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    } else {
-      localStorage.removeItem(STORAGE_KEY);
-    }
-
-    setIsLiked((prev) => !prev);
-
-    // 🔹 giv besked til forælder (LikedActivities) om at listen har ændret sig
+    // giv evt. besked til forælder (fx LikedActivities)
     if (typeof onToggleLike === "function") {
+      const next = liked
+        ? likedList.filter((a) => a._id !== activity._id)
+        : [...likedList, activity];
       onToggleLike(next);
     }
   };
@@ -58,6 +43,7 @@ const ActivityCard = ({ activity, onToggleLike }) => {
         <p className={styles.activityDay}>{activity.date}</p>
         <p className={styles.activityTime}>kl. {activity.time}</p>
 
+        {/* Se aktivitet (single-view) */}
         <button
           className={styles.singlePageOpen}
           onClick={() => navigate(`/activity/${activity._id}`)}
@@ -65,6 +51,7 @@ const ActivityCard = ({ activity, onToggleLike }) => {
           Se Aktivitet
         </button>
 
+        {/* Læs mere toggle */}
         <button className={styles.activityReadmore} onClick={handleReadmore}>
           {showMore ? "Læs mindre" : "Læs mere"}
         </button>
@@ -78,11 +65,12 @@ const ActivityCard = ({ activity, onToggleLike }) => {
         </p>
       </div>
 
+      {/* Like-knap */}
       <button
-        className={`${styles.likeBtn} ${isLiked ? styles.liked : ""}`}
-        onClick={toggleLike}
+        className={`${styles.likeBtn} ${liked ? styles.liked : ""}`}
+        onClick={handleLikeClick}
         aria-label={
-          isLiked
+          liked
             ? "Fjern aktivitet fra din liste"
             : "Tilføj aktivitet til din liste"
         }

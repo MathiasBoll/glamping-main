@@ -3,34 +3,72 @@ import { useEffect, useMemo, useState } from "react";
 import PageHeader from "../components/pageHeader/PageHeader";
 import styles from "./Contact.module.css";
 
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Swal from "sweetalert2";
+import { FiCheckCircle } from "react-icons/fi";
+
 const STORAGE_KEY = "sentMessages";
 const SELECTED_STAY_KEY = "selectedStay";
 
-const emptyForm = {
-  name: "",
-  email: "",
-  category: "",
-  message: "",
-};
+// TODO: ret denne URL til præcis det kontakt-endpoint I har fået udleveret
+const CONTACT_API_URL = "https://glamping-rqu9j.ondigitalocean.app/contact";
 
 const namePattern = /^[A-Za-zÀ-ÖØ-öø-ÿ '\-]+$/;
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// === Yup-schema til validering ===
+const schema = yup.object({
+  name: yup
+    .string()
+    .trim()
+    .required("Skriv dit navn.")
+    .min(2, "Navn skal være mindst 2 tegn.")
+    .matches(namePattern, "Navn må kun indeholde bogstaver."),
+  email: yup
+    .string()
+    .trim()
+    .required("Skriv din email.")
+    .email("Indtast en gyldig email (fx navn@domæne.dk)."),
+  category: yup.string().trim().required("Vælg et emne for din henvendelse."),
+  message: yup
+    .string()
+    .trim()
+    .required("Skriv en besked.")
+    .min(10, "Beskeden skal være mindst 10 tegn."),
+});
+
+const readMessages = () =>
+  JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+const writeMessages = (arr) =>
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
 
 const Contact = () => {
-  const [form, setForm] = useState(emptyForm);
-  const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
   const [msgCount, setMsgCount] = useState(0);
-  const [successName, setSuccessName] = useState(""); // 👈 nyt navn til succes-besked
+  const [submitted, setSubmitted] = useState(false);
+  const [successName, setSuccessName] = useState("");
 
-  // Helpers til besked-liste
-  const readMessages = () =>
-    JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors, isSubmitting },
+    watch,
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      name: "",
+      email: "",
+      category: "",
+      message: "",
+    },
+  });
 
-  const writeMessages = (arr) =>
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  const watchedCategory = watch("category");
 
-  // Hent antal beskeder til linket "Se mine beskeder (X)"
+  // antal beskeder til linket
   useEffect(() => {
     setMsgCount(readMessages().length);
   }, []);
@@ -44,121 +82,81 @@ const Contact = () => {
       const stay = JSON.parse(stored);
       if (!stay || !stay.id || !stay.title) return;
 
-      setForm((prev) => ({
-        ...prev,
-        category: `stay:${stay.id}|${stay.title}`,
-      }));
+      const value = `stay:${stay.id}|${stay.title}`;
+      setValue("category", value, { shouldValidate: true });
 
-      // kun én gang – derefter fjernes den
       localStorage.removeItem(SELECTED_STAY_KEY);
     } catch {
-      // ignorer JSON-fejl
+      // Ignorer evt. JSON-fejl
     }
-  }, []);
+  }, [setValue]);
 
-  // Pæn label-tekst til category (bruges når vi gemmer)
+  // pæn label-tekst til category
   const categoryLabel = useMemo(() => {
-    if (!form.category) return "";
-    if (form.category.startsWith("stay:")) {
-      const [, title] = form.category.split("|");
+    if (!watchedCategory) return "";
+    if (watchedCategory.startsWith("stay:")) {
+      const [, title] = watchedCategory.split("|");
       return title || "Booking";
     }
-    if (form.category === "booking") return "Booking";
-    if (form.category === "spørgsmål") return "Generelt spørgsmål";
-    if (form.category === "andet") return "Andet";
-    return form.category;
-  }, [form.category]);
+    if (watchedCategory === "booking") return "Booking";
+    if (watchedCategory === "spørgsmål") return "Generelt spørgsmål";
+    if (watchedCategory === "andet") return "Andet";
+    return watchedCategory;
+  }, [watchedCategory]);
 
-  // Validering af ét felt
-  const validateField = (name, value) => {
-    const v = value.trim();
-
-    switch (name) {
-      case "name":
-        if (!v) return "Skriv dit navn.";
-        if (v.length < 2) return "Navn skal være mindst 2 tegn.";
-        if (!namePattern.test(v)) return "Navn må kun indeholde bogstaver.";
-        return "";
-      case "email":
-        if (!v) return "Skriv din email.";
-        if (!emailPattern.test(v))
-          return "Indtast en gyldig email (fx navn@domæne.dk).";
-        return "";
-      case "category":
-        if (!v) return "Vælg et emne for din henvendelse.";
-        return "";
-      case "message":
-        if (!v) return "Skriv en besked.";
-        if (v.length < 10) return "Beskeden skal være mindst 10 tegn.";
-        return "";
-      default:
-        return "";
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setForm((prev) => ({ ...prev, [name]: value }));
-
-    setErrors((prev) => ({
-      ...prev,
-      [name]: validateField(name, value),
-    }));
-  };
-
-  const handleBlur = (e) => {
-    const { name, value } = e.target;
-    setErrors((prev) => ({
-      ...prev,
-      [name]: validateField(name, value),
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     setSubmitted(false);
 
-    const newErrors = {};
-    Object.entries(form).forEach(([name, value]) => {
-      const msg = validateField(name, value);
-      if (msg) newErrors[name] = msg;
-    });
-    setErrors(newErrors);
-
-    // Hvis der er fejl → fokusér første felt med fejl
-    const firstErrorKey = Object.keys(newErrors)[0];
-    if (firstErrorKey) {
-      const el = document.querySelector(`[name="${firstErrorKey}"]`);
-      if (el && typeof el.focus === "function") el.focus();
-      return;
-    }
-
-    // GEM navnet til success-boksen før vi nulstiller formularen
-    const cleanName = form.name.trim();
-    setSuccessName(cleanName);
-
-    // Ingen fejl → gem besked
     const entry = {
-      name: cleanName,
-      email: form.email.trim(),
+      name: data.name.trim(),
+      email: data.email.trim(),
       subject: categoryLabel || "Ingen emne",
-      message: form.message.trim(),
+      message: data.message.trim(),
       ts: Date.now(),
     };
 
+    // 1) POST til API
+    try {
+      await fetch(CONTACT_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(entry),
+      });
+    } catch (err) {
+      console.error("Fejl ved afsendelse til API:", err);
+      await Swal.fire({
+        icon: "error",
+        title: "Ups...",
+        text: "Noget gik galt under afsendelsen. Prøv igen om lidt.",
+        confirmButtonColor: "#839B97",
+      });
+      return;
+    }
+
+    // 2) Gem til “Mine beskeder”
     const list = readMessages();
     list.push(entry);
     writeMessages(list);
     setMsgCount(list.length);
 
+    // 3) Personlig tak-besked
+    setSuccessName(data.name.trim());
     setSubmitted(true);
-    setForm(emptyForm);
+
+    // 4) Nulstil formular
+    reset({ name: "", email: "", category: "", message: "" });
+
+    // 5) SweetAlert-modal (kravet om modal feedback)
+    await Swal.fire({
+      icon: "success",
+      title: "Tak for din besked!",
+      text: "Vi vender tilbage hurtigst muligt.",
+      confirmButtonColor: "#839B97",
+    });
   };
 
   return (
     <>
-      {/* HERO – bruger PageHeader, som vælger kontakt-hero via path */}
       <PageHeader titleOne="Kontakt" titleTwo="Gitte" />
 
       <main className={styles.contactMain}>
@@ -178,7 +176,7 @@ const Contact = () => {
         <form
           className={styles.contactForm}
           noValidate
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
         >
           {/* Navn */}
           <div className={styles.field}>
@@ -187,16 +185,14 @@ const Contact = () => {
             </label>
             <input
               id="cf-name"
-              name="name"
-              type="text"
               placeholder="Navn"
-              value={form.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
               autoComplete="name"
+              {...register("name")}
             />
             {errors.name && (
-              <small className={styles.fieldError}>{errors.name}</small>
+              <small className={styles.fieldError}>
+                {errors.name.message}
+              </small>
             )}
           </div>
 
@@ -207,41 +203,32 @@ const Contact = () => {
             </label>
             <input
               id="cf-email"
-              name="email"
               type="email"
               placeholder="Email"
-              value={form.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
               autoComplete="email"
+              {...register("email")}
             />
             {errors.email && (
-              <small className={styles.fieldError}>{errors.email}</small>
+              <small className={styles.fieldError}>
+                {errors.email.message}
+              </small>
             )}
           </div>
 
-          {/* Kategori (inkl. auto-fyldt ophold) */}
+          {/* Kategori */}
           <div className={styles.field}>
             <label className="sr-only" htmlFor="cf-cat">
               Hvad drejer henvendelsen sig om?
             </label>
-            <select
-              id="cf-cat"
-              name="category"
-              value={form.category}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              required
-            >
-              {!form.category && (
+            <select id="cf-cat" {...register("category")}>
+              {!watchedCategory && (
                 <option value="">
                   Hvad drejer henvendelsen sig om?
                 </option>
               )}
 
-              {/* hvis valgt ophold → tilføj som option */}
-              {form.category.startsWith("stay:") && (
-                <option value={form.category}>
+              {watchedCategory?.startsWith("stay:") && (
+                <option value={watchedCategory}>
                   {categoryLabel || "Valgt ophold"}
                 </option>
               )}
@@ -251,7 +238,9 @@ const Contact = () => {
               <option value="andet">Andet</option>
             </select>
             {errors.category && (
-              <small className={styles.fieldError}>{errors.category}</small>
+              <small className={styles.fieldError}>
+                {errors.category.message}
+              </small>
             )}
           </div>
 
@@ -262,28 +251,32 @@ const Contact = () => {
             </label>
             <textarea
               id="cf-msg"
-              name="message"
-              placeholder="Besked (Skriv datoer, hvis det drejer sig om booking)"
-              value={form.message}
-              onChange={handleChange}
-              onBlur={handleBlur}
               rows={4}
+              placeholder="Besked (Skriv datoer, hvis det drejer sig om booking)"
+              {...register("message")}
             />
             {errors.message && (
-              <small className={styles.fieldError}>{errors.message}</small>
+              <small className={styles.fieldError}>
+                {errors.message.message}
+              </small>
             )}
           </div>
 
-          {/* Submit */}
+          {/* Submit-knap i jeres design */}
           <div className={styles.submitWrap}>
-            <button type="submit" className={styles.formButton}>
-              INDSEND
+            <button
+              type="submit"
+              className={styles.formButton}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Sender..." : "INDSEND"}
             </button>
           </div>
 
+          {/* Personlig tak-boks under formularen */}
           {submitted && (
             <div className={styles.successBox}>
-              <div className={styles.successIcon}>✓</div>
+              <FiCheckCircle className={styles.successIcon} />
               <p className={styles.successLine}>
                 Hej{successName ? ` ${successName}` : ""},
               </p>
