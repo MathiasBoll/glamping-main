@@ -154,7 +154,7 @@ const Contact = () => {
   return (
     <>
       {/* HERO – bruger PageHeader, som vælger kontakt-hero via path */}
-      <PageHeader titleOne="Kontakt" titleTwo="Gitte" bgImg={null} />
+      <PageHeader titleOne="Kontakt" titleTwo="Gitte" />
 
       <main className={styles.contactMain}>
         <section className={styles.contactIntro}>

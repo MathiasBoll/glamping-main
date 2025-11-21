@@ -44,7 +44,7 @@ const Messages = () => {
 
   return (
     <>
-      <PageHeader titleOne="Mine" titleTwo="beskeder" bgImg={null} />
+      <PageHeader titleOne="Mine" titleTwo="beskeder" />
 
       <main className={styles.messagesMain}>
         <div id="messages" className={styles.messagesInner}>
