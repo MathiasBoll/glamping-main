@@ -1,19 +1,33 @@
-/* src/components/activities/activities.module.css */
+/* ========================================================================== */
+/*  src/components/activities/activities.module.css                           */
+/*  Styling til både aktivitetslisten og single activity view                 */
+/*  Indeholder: Hero, kort, læs-mere, like-knap samt single activity layout   */
+/* ========================================================================== */
 
-/* ===== GENEREL BAGGRUND ===== */
+
+/* ========================================================================== */
+/* ========== GENEREL BAGGRUND =============================================== */
+/* ========================================================================== */
+
 .activityContainer {
+  /* Overordnet lys baggrund som matcher designet */
   background-color: #cfd3ce;
   padding-bottom: 80px;
 }
 
-/* ===== HERO PÅ LISTE-SIDEN ===== */
+
+/* ========================================================================== */
+/* ========== HERO-SEKTION (LISTEVISNING) ==================================== */
+/* ========================================================================== */
+
 .activityHero {
+  /* Wrapper omkring hero-billedet */
   position: relative;
   width: 100%;
   overflow: hidden;
 }
 
-/* samme højde-følelse som forsiden/ophold (ca. 450px) */
+/* Hero-billede (samme højde som de andre sider for ens look) */
 .activityHero img {
   width: 100%;
   height: 450px;
@@ -22,13 +36,13 @@
   object-position: center;
 }
 
-/* "Aktiviteter" oven på billedet */
+/* Stor tekst henover hero-billedet ("Aktiviteter") */
 .activityHeroTitle {
   position: absolute;
   inset: 0;
-  height: 450px;               /* matcher billedet */
+  height: 450px; /* matcher billedet */
   display: grid;
-  place-content: start center;
+  place-content: start center; /* centreret, men lidt ned */
   padding-top: 150px;
 
   font-family: "Zen Loop", cursive;
@@ -38,11 +52,11 @@
   text-align: center;
 }
 
-/* blå tekstboks under hero */
+/* Blå tekstboks under hero (samme stil som "ophold") */
 .activityHeroDesc {
   background-color: #34626c;
   border-radius: 70px 0 0 0;
-  margin-top: -70px;           /* overlap med hero, som på de andre sider */
+  margin-top: -70px; /* overlapper billedet */
   padding: 80px 24px 60px;
   color: #fff;
   text-align: center;
@@ -62,7 +76,11 @@
   margin: 0 auto;
 }
 
-/* ==================== KORT-LISTE (som stays-kort) ==================== */
+
+/* ========================================================================== */
+/* ========== AKTIVITETSKORT (LIST VIEW) ===================================== */
+/*  Kortene følger samme layout som stays-kortene                             */
+/* ========================================================================== */
 
 .activityCard {
   position: relative;
@@ -70,27 +88,29 @@
   flex-direction: column;
   align-items: center;
 
-  margin: 80px auto 0;           /* samme luft som stay-kortene */
+  margin: 80px auto 0;
   width: min(100%, 360px);
   background: transparent;
 }
 
-/* Beige top med titel */
+/* Beige topbar hvor titlen står */
 .activityTitle {
   width: 100%;
   background-color: #c6b497;
   color: #ffffff;
   border-radius: 66px 0 66px 0;
   padding: 24px 16px;
-  text-align: center;      /* centreret titel */
+  text-align: center;
+
   font-family: "Zen Loop", cursive;
   font-weight: 200;
   font-size: 32px;
+
   position: relative;
   filter: drop-shadow(0px 3px 15px #00000029);
 }
 
-/* Hjerte-knap inde i den beige bar */
+/* Like-knap (hjerte) placeret inde i den beige topbar */
 .likeBtn {
   position: absolute;
   top: 18px;
@@ -99,40 +119,45 @@
   height: 26px;
   border: 0;
   padding: 0;
+
   border-radius: 8px 0 8px 0;
   background-color: #839b97;
   cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* Hjerteikonet */
 .likeBtn svg path {
   fill: #b9c6c4;
 }
 
-/* når liked */
+/* Når aktiviteten er liket → hvidt hjerte */
 .liked svg path {
   fill: #ffffff;
 }
 
-/* Billede i midten */
+/* Aktivitetens billede */
 .activityImg {
   width: 100%;
   display: block;
   object-fit: cover;
 }
 
-/* Teal-boks nederst */
+/* Nederste teal-farvede informationsboks */
 .activityInfo {
   width: 100%;
   background-color: #34626c;
   border-radius: 0 0 66px 0;
   filter: drop-shadow(0px 3px 15px #00000029);
+
   padding: 22px 24px 26px;
   font-family: "Zen Loop", cursive;
   color: #ffffff;
   text-align: left;
+
   position: relative;
 }
 
@@ -142,21 +167,23 @@
   line-height: 1.2;
 }
 
-/* Læs mere-knap (stor bue, som på stay) */
+/* "Læs mere" knappen — samme buede design som i stay-kort */
 .activityReadmore {
   margin-top: 16px;
   width: 100%;
   height: 46px;
   border-radius: 66px 0 66px 0;
   border: 2px solid #ffffff;
+
   background: transparent;
   color: #ffffff;
+
   font-family: "Zen Loop", cursive;
   font-size: 22px;
   cursor: pointer;
 }
 
-/* Teksten der foldes ud */
+/* Ekstra tekst, der foldes ud */
 .activityReadmoreText {
   display: none;
   margin-top: 16px;
@@ -164,38 +191,44 @@
   font-size: 13px;
 }
 
+/* Bliver synlig når knappen aktiveres */
 .activityReadmoreTextShow {
   display: block;
 }
 
-/* "Se Aktivitet" – lille beige knap oppe ved hjertet */
+/* "Se Aktivitet" knap i toppen – links til single view */
 .singlePageOpen {
   position: absolute;
   top: 18px;          /* samme højde som hjertet */
-  right: 70px;        /* til venstre for hjertet */
+  right: 70px;        /* placeret mellem titel og hjertet */
+
   border: 0;
   padding: 4px 14px;
   border-radius: 20px 0 20px 0;
+
   background-color: #c6b497;
   color: #ffffff;
+
   font-family: "Zen Loop", cursive;
   font-size: 16px;
   cursor: pointer;
 }
 
-/* ekstra luft under sidste kort */
 .activityCard:last-child {
   margin-bottom: 80px;
 }
 
-/* Tablet */
+
+/* ========================================================================== */
+/* ========== RESPONSIVE BREAKPOINTS ========================================= */
+/* ========================================================================== */
+
 @media (min-width: 768px) {
   .activityCard {
     width: min(100%, 620px);
   }
 }
 
-/* Desktop */
 @media (min-width: 1200px) {
   .activityCard {
     width: min(100%, 780px);
@@ -206,31 +239,34 @@
   }
 }
 
-/* ==================== SINGLE VIEW: /activity/:id ==================== */
 
-/* Baggrund på hele siden */
+/* ========================================================================== */
+/* ========== SINGLE VIEW (/activity/:id) ==================================== */
+/* ========================================================================== */
+
+/* Hele baggrunden for single activity */
 .singlePage {
   background-color: #cfd3ce;
 }
 
-/* Wrapper for det ene store kort */
+/* Wrapper for hele kortet i single view */
 .activitySingle {
   width: min(100%, 360px);
-  margin: 120px auto 120px;       /* mere luft til både hero og footer */
+  margin: 120px auto 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Beige top-boks med aktivitetens titel */
+/* Beige topbar med aktivitetstitlen */
 .singleTitle {
   width: 100%;
   background-color: #c6b498;
   color: #ffffff;
+
   font-family: "Zen Loop", cursive;
   font-weight: 200;
   font-size: 32px;
-  line-height: 1.1;
   text-align: center;
 
   border-radius: 66px 0 66px 0;
@@ -238,30 +274,29 @@
   filter: drop-shadow(0px 3px 15px #00000029);
 }
 
-/* Billedet i midten – stort på single */
+/* Billede i single view */
 .singleImage {
   width: 100%;
   display: block;
   object-fit: cover;
 }
 
-/* Nederste teal-boks med tekst */
+/* Nederste informationsboks (teal) */
 .singleInfo {
   width: 100%;
   background-color: #34626c;
   color: #ffffff;
+
   border-radius: 0 0 66px 0;
   filter: drop-shadow(0px 3px 15px #00000029);
 
   padding: 32px 24px;
-  box-sizing: border-box;
-
   font-family: "Nanum Gothic", sans-serif;
   font-size: 14px;
   line-height: 1.5;
 }
 
-/* Dato + tid */
+/* Dato + tid i single */
 .singleDay,
 .singleTime {
   font-family: "Zen Loop", cursive;
@@ -269,19 +304,19 @@
   margin: 0 0 4px;
 }
 
-/* Beskrivelsen */
 .singleDescription {
   margin-top: 16px;
 }
 
-/* Loader/fejl-tekst */
+/* Loader / fejlbesked */
 .singleMessage {
   text-align: center;
   padding: 40px 16px 80px;
+
   font-family: "Nanum Gothic", sans-serif;
 }
 
-/* Større kort på tablet/desktop – samme logik som stays-kortene */
+/* Større kort på større skærme */
 @media (min-width: 768px) {
   .activitySingle {
     width: min(100%, 620px);
