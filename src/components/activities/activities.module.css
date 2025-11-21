@@ -6,30 +6,27 @@
   padding-bottom: 80px;
 }
 
-/* ==================== HERO – LISTE-SIDE ==================== */
-
+/* ===== HERO PÅ LISTE-SIDEN ===== */
 .activityHero {
   position: relative;
   width: 100%;
   overflow: hidden;
 }
 
-/* kano-hero */
+/* samme højde-følelse som forsiden/ophold (ca. 450px) */
 .activityHero img {
   width: 100%;
-  height: 450px;           /* samme højde-følelse som de andre heroer */
+  height: 450px;
+  display: block;
   object-fit: cover;
   object-position: center;
-  display: block;
 }
 
 /* "Aktiviteter" oven på billedet */
 .activityHeroTitle {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 450px;           /* matcher billedet */
+  inset: 0;
+  height: 450px;               /* matcher billedet */
   display: grid;
   place-content: start center;
   padding-top: 150px;
@@ -38,15 +35,16 @@
   font-weight: 200;
   font-size: 80px;
   color: #ffffff;
+  text-align: center;
 }
 
 /* blå tekstboks under hero */
 .activityHeroDesc {
   background-color: #34626c;
   border-radius: 70px 0 0 0;
-  margin-top: -70px;       /* overlapper lidt med hero, ligesom på ophold */
+  margin-top: -70px;           /* overlap med hero, som på de andre sider */
   padding: 80px 24px 60px;
-  color: #ffffff;
+  color: #fff;
   text-align: center;
 }
 
@@ -84,16 +82,10 @@
   color: #ffffff;
   border-radius: 66px 0 66px 0;
   padding: 24px 16px;
+  text-align: center;      /* ← var left, nu center */
   font-family: "Zen Loop", cursive;
-  font-size: 32px;
   font-weight: 200;
-
-  /* fix center */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
+  font-size: 32px;
   position: relative;
   filter: drop-shadow(0px 3px 15px #00000029);
 }
