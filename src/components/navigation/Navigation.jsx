@@ -111,7 +111,6 @@ const Navigation = () => {
           Ophold
         </NavLink>
 
-        {/* 🔹 nyt menupunkt */}
         <NavLink
           to="/activities"
           className={({ isActive }) =>
@@ -120,6 +119,17 @@ const Navigation = () => {
           onClick={closeMenu}
         >
           Aktiviteter
+        </NavLink>
+
+        {/* 🔹 NYT PUNKT: Min liste */}
+        <NavLink
+          to="/liked"
+          className={({ isActive }) =>
+            `${styles.menuLink} ${isActive ? styles.menuLinkActive : ""}`
+          }
+          onClick={closeMenu}
+        >
+          Min liste
         </NavLink>
       </nav>
     </>
