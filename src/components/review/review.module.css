@@ -1,23 +1,36 @@
+/* ============================================================
+   REVIEW WRAPPER
+   - Centrerer hele anmeldelsen, så teksten præsenteres roligt
+     og ensartet uanset skærmstørrelse.
+   ============================================================ */
 .review {
   text-align: center;
 }
 
-/* Navn + ophold */
+/* ============================================================
+   TITELSEKTION (navn + ophold)
+   - Giver lidt luft under titlen, så indholdet bliver tydeligt
+     adskilt fra selve anmeldelsesteksten.
+   ============================================================ */
 .title {
   margin-bottom: 16px;
 }
 
+/* Styling af navn + ophold */
 .title p {
-  font-family: "Zen Loop", cursive;
+  font-family: "Zen Loop", cursive;   /* samme håndskrift som resten af designet */
   font-size: 20px;
   line-height: 1.3;
-  margin: 0;
+  margin: 0;                          /* fjerner default afstand mellem <p>-tags */
 }
 
-/* Brødtekst */
+/* ============================================================
+   ANMELDELSESTEKST / BRØDTEKST
+   - "Nanum Gothic" bruges til længere tekst for bedre læsbarhed.
+   ============================================================ */
 .desc {
   font-family: "Nanum Gothic", sans-serif;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.5;                   /* giver luft i linjerne = bedre læsevenlighed */
   margin: 0;
 }
