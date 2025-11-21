@@ -1,25 +1,31 @@
-/* Hele teal-blokken under hero */
+/* =====================================================
+   TEAL-BLOKKEN UNDER HERO
+   - Denne sektion sidder direkte under PageHeader
+   - Overlapper heroen med en blød kurve som i designet
+   ===================================================== */
 .stayDetails {
-  --overlap: 83px;
+  --overlap: 83px; /* hvor meget sektionen overlapper hero-billedet */
 
   background-color: #34626c;
   color: #fff;
-  border-radius: 70px 0 0 0;
+  border-radius: 70px 0 0 0; /* karakteristisk runde hjørne */
 
-  margin-top: calc(-1 * var(--overlap)); /* overlap med hero */
+  margin-top: calc(-1 * var(--overlap)); /* træk heroen op over teal-baren */
   padding-top: var(--overlap);
   padding-bottom: 100px;
   padding-inline: 24px;
 
   position: relative;
-  z-index: 2;
+  z-index: 2; /* sørger for at blokken ligger foran hero */
 
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Overskriften "Tag væk en weekend..." */
+/* =====================================================
+   OVERSKRIFT – fx "Tag væk en weekend, med én du holder af"
+   ===================================================== */
 .title {
   font-family: "Zen Loop", cursive;
   font-weight: 200;
@@ -29,7 +35,11 @@
   margin-bottom: 24px;
 }
 
-/* Tekstcontainer */
+/* =====================================================
+   TEKSTCONTAINER
+   - Holder beskrivelse, includes og pris
+   - Begrænset bredde for flot læsevenlighed
+   ===================================================== */
 .info {
   max-width: 500px;
   text-align: center;
@@ -37,7 +47,7 @@
   font-size: 14px;
 }
 
-/* Beskrivelse */
+/* Beskrivelse af opholdet */
 .desc {
   margin-bottom: 24px;
 }
@@ -48,7 +58,7 @@
   font-weight: 600;
 }
 
-/* Liste med inkluderede ting */
+/* Liste af inkluderede elementer (uden bullets) */
 .included {
   list-style: none;
   padding-left: 0;
@@ -59,7 +69,7 @@
   margin-bottom: 4px;
 }
 
-/* Pris-linje */
+/* Pris-sektion */
 .price {
   margin-top: 8px;
   margin-bottom: 24px;
@@ -67,7 +77,10 @@
   font-size: 24px;
 }
 
-/* Book-knap wrapper */
+/* =====================================================
+   BOOK NU – KNAP WRAPPER
+   - Sørger for spacing under indholdet
+   ===================================================== */
 .buttonWrap {
   margin-top: 8px;
 }
