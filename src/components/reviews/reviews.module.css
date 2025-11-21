@@ -1,24 +1,34 @@
-/* ============================================
-   BASICS (MOBIL)
-   ============================================ */
+/* ============================================================
+   REVIEWS SECTION – GLOBAL INDPAKNING
+   Denne sektion indeholder hele "Vores gæster udtaler"-området.
+   Layoutet er centreret og følger samme farvetema som resten
+   af sitet (#cfd3ce baggrund + teal/beige elementer).
+   ============================================================ */
 
 .reviewsSection {
-  background-color: #cfd3ce;
+  background-color: #cfd3ce;          /* Match med resten af sitet */
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 0 80px;
+  padding: 40px 0 80px;               /* Luft top/bund */
 }
+
+
+/* ============================================================
+   BEIGE HEADER-BOKS ("Vores gæster udtaler")
+   Bruges til at skabe et visuelt anker – matcher designet
+   med de diagonale hjørner og drop-shadow.
+   ============================================================ */
 
 .headingBox {
   background-color: #c6b497;
-  border-radius: 66px 0 66px 0;
+  border-radius: 66px 0 66px 0;       /* Designets signaturform */
   filter: drop-shadow(0px 3px 15px #00000029);
   padding: 20px 30px;
-  margin: 40px 0 40px;
+  margin: 40px 0;
   text-align: center;
   width: 90%;
-  max-width: 340px;
+  max-width: 340px;                   /* Mobil: smal og centreret */
 }
 
 .headingBox h2 {
@@ -29,21 +39,33 @@
   margin: 0;
 }
 
+
+/* ============================================================
+   LISTE AF REVIEW-KORT
+   UL bruges for semantik, men styles som en fleksibel liste.
+   ============================================================ */
+
 .reviewList {
   width: 90%;
   max-width: 340px;
   display: flex;
   flex-direction: column;
   gap: 40px;
-   list-style: none;   /* ⬅️ fjerner prikken */
-  padding: 0;         /* fjern default padding fra UL */
-  margin: 0 auto;     /* centrer listen */
 
+  list-style: none;    /* Fjern default bullets */
+  padding: 0;          /* Fjern standard UL-padding */
+  margin: 0 auto;      /* Centrer på siden */
 }
+
+
+/* ============================================================
+   SELVE REVIEW-KORTET
+   Ligner stays/activities-kort i formen: teal + afrundede hjørner.
+   ============================================================ */
 
 .card {
   background-color: #839b97;
-  border-radius: 66px 0 66px 0;
+  border-radius: 66px 0 66px 0;        /* Samme tema som andre kort */
   filter: drop-shadow(0px 3px 15px #00000029);
   padding: 30px 27px 40px;
   color: #fff;
@@ -51,9 +73,10 @@
 
 
 
-/* ============================================
-   TABLET (FYLD MERE)
-   ============================================ */
+/* ============================================================
+   TABLET BREAKPOINT (min-width: 700px)
+   Fylder mere horisontalt og øger typografistørrelser.
+   ============================================================ */
 
 @media (min-width: 700px) {
   .headingBox {
@@ -78,9 +101,10 @@
 
 
 
-/* ============================================
-   LAPTOP (FYLD EN MASSE)
-   ============================================ */
+/* ============================================================
+   LAPTOP BREAKPOINT (min-width: 1024px)
+   Bredere layout og større typografi.
+   ============================================================ */
 
 @media (min-width: 1024px) {
   .headingBox {
@@ -93,7 +117,7 @@
   }
 
   .reviewList {
-    max-width: 850px;   /* STOR BREDDE */
+    max-width: 850px;
     gap: 60px;
   }
 
@@ -105,9 +129,10 @@
 
 
 
-/* ============================================
-   LARGE DESKTOP (FYLDER NÆSTEN HELE SIDEN)
-   ============================================ */
+/* ============================================================
+   LARGE DESKTOP BREAKPOINT (min-width: 1400px)
+   Fylder næsten hele skærmens bredde – stort og luksuriøst.
+   ============================================================ */
 
 @media (min-width: 1400px) {
   .headingBox {
