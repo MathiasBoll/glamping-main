@@ -276,11 +276,17 @@ const Contact = () => {
   </button>
 </div>
 
-          {submitted && (
-            <p className={styles.successText}>
-              Tak! Din besked er sendt ✅
-            </p>
-          )}
+{submitted && (
+  <div className={styles.successBox}>
+    <span className={styles.successIcon}>✔</span>
+    <p>
+      Hej {form.name.split(" ")[0]},<br />
+      Tak for din besked!<br />
+      Du hører fra os snarest.
+    </p>
+  </div>
+)}
+
         </form>
 
         {/* Link til “Mine beskeder” */}
