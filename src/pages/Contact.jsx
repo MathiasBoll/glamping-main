@@ -21,6 +21,7 @@ const Contact = () => {
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [msgCount, setMsgCount] = useState(0);
+  const [successName, setSuccessName] = useState(""); // 👈 nyt navn til succes-besked
 
   // Helpers til besked-liste
   const readMessages = () =>
@@ -133,9 +134,13 @@ const Contact = () => {
       return;
     }
 
+    // GEM navnet til success-boksen før vi nulstiller formularen
+    const cleanName = form.name.trim();
+    setSuccessName(cleanName);
+
     // Ingen fejl → gem besked
     const entry = {
-      name: form.name.trim(),
+      name: cleanName,
       email: form.email.trim(),
       subject: categoryLabel || "Ingen emne",
       message: form.message.trim(),
@@ -271,22 +276,21 @@ const Contact = () => {
 
           {/* Submit */}
           <div className={styles.submitWrap}>
-  <button type="submit" className={styles.formButton}>
-    INDSEND
-  </button>
-</div>
+            <button type="submit" className={styles.formButton}>
+              INDSEND
+            </button>
+          </div>
 
-{submitted && (
-  <div className={styles.successBox}>
-    <span className={styles.successIcon}>✔</span>
-    <p>
-      Hej {form.name.split(" ")[0]},<br />
-      Tak for din besked!<br />
-      Du hører fra os snarest.
-    </p>
-  </div>
-)}
-
+          {submitted && (
+            <div className={styles.successBox}>
+              <div className={styles.successIcon}>✓</div>
+              <p className={styles.successLine}>
+                Hej{successName ? ` ${successName}` : ""},
+              </p>
+              <p className={styles.successLine}>Tak for din besked!</p>
+              <p className={styles.successLine}>Du hører fra os snarest.</p>
+            </div>
+          )}
         </form>
 
         {/* Link til “Mine beskeder” */}
