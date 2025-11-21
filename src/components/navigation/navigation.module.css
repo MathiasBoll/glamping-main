@@ -1,13 +1,13 @@
 /* =====================================================
-   TOPBAR – fast navigation (ligger over hero/slider)
+   TOPBAR – ligger øverst på alle sider og overlapper hero
    ===================================================== */
 .topbar {
   width: 100%;
-  position: absolute;         /* læg den oven på heroen */
+  position: absolute;          /* Ligger ovenpå hero-billedet */
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 1000;               /* Sørger for at topbar ligger over alt andet */
   background: transparent;
 
   display: flex;
@@ -17,7 +17,7 @@
   box-sizing: border-box;
 }
 
-/* Logo (venstre hjørne – kun på undersider) */
+/* Logo i venstre side (vises kun på undersider – ikke forsiden) */
 .topbarLogo {
   display: flex;
   align-items: center;
@@ -28,18 +28,18 @@
   width: 40px;
   height: 40px;
   display: block;
-  filter: brightness(0) invert(1); /* hvidt logo */
+  filter: brightness(0) invert(1);   /* Gør logoet hvidt for bedre kontrast */
 }
 
 /* =====================================================
-   BURGERMENU (knappen til mobilmenu)
+   BURGERMENU – mobilknap til at åbne navigationen
    ===================================================== */
 .burger {
   width: 40px;
   height: 40px;
   border: 0;
   border-radius: 8px;
-  background: #839b97;
+  background: #839b97;          /* Teal-ish farve fra designet */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,6 +48,7 @@
   cursor: pointer;
 }
 
+/* De tre streger i burger-menuen */
 .burger span {
   width: 20px;
   height: 2px;
@@ -56,16 +57,16 @@
 }
 
 /* =====================================================
-   MOBILMENU (overlay som dækker hele skærmen)
+   MOBILMENU – fuldskærms overlay der glider ind
    ===================================================== */
 .mobileMenu {
   position: fixed;
-  inset: 0;
-  display: none;              /* skjult fra start */
-  background: #839b97;
-  z-index: 2000;
+  inset: 0;                     /* top:0 right:0 bottom:0 left:0 */
+  display: none;                /* Skjules som default */
+  background: #839b97;          /* Samme farve som burgeren */
+  z-index: 2000;                /* Ligger højere end topbar */
 
-  display: none;
+  /* Layout inde i menuen */
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -78,11 +79,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Når menuen er aktiv → vis som flex */
 .active {
   display: flex;
 }
 
-/* Links i mobilmenuen */
+/* =====================================================
+   Links i mobilmenuen
+   ===================================================== */
 .menuLink {
   font-size: 1.8rem;
   color: #fff;
@@ -90,17 +94,21 @@
   transition: color 0.2s ease;
 }
 
+/* Aktivt link markeres med gul accentfarve */
 .menuLinkActive {
   color: #f0d98c;
 }
 
+/* Hover og keyboard-focus */
 .menuLink:hover,
 .menuLink:focus {
   color: #f0d98c;
   outline: none;
 }
 
-/* Luk-knap (X øverst i menuen) */
+/* =====================================================
+   Luk-knap (X) i mobilmenuen
+   ===================================================== */
 .closeBtn {
   position: absolute;
   top: 1rem;
@@ -111,12 +119,15 @@
   color: #fff;
   cursor: pointer;
 
-  font-family: inherit;
+  font-family: inherit; /* matcher menuens skrifttype */
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-/* Forside: burger skal ligge til højre */
+
+/* =====================================================
+   Forside: burgeren skal være helt til højre
+   ===================================================== */
 .homeNav {
   justify-content: flex-end;
 }
