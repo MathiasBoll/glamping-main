@@ -1,7 +1,17 @@
+/* src/pages/Contact.module.css */
+
+/* -------------------------------------------------------
+   Fonts (designkrav fra opgaven)
+   ------------------------------------------------------- */
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Zen+Loop:ital@0;1&display=swap");
 
-/* Main container – blå baggrund, luft og standard font */
+/* =======================================================
+   DEL 1: Kontakt-side base layout (primær version)
+   ======================================================= */
+
+/* Main container – blå baggrund, luft og standard font
+   Bruges som wrapper rundt om hele kontakt-indholdet */
 .contactMain {
   position: relative;
   background-color: #34626c;
@@ -10,7 +20,8 @@
   font-family: "Nanum Gothic", sans-serif;
 }
 
-/* Øverste bue i venstre hjørne (overlay-effekt) */
+/* Øverste bue i venstre hjørne (overlay-effekt)
+   Efterligner figma/vanilla overlap-look */
 .contactMain::before {
   content: "";
   position: absolute;
@@ -23,7 +34,7 @@
   pointer-events: none;
 }
 
-/* Intro-tekst boks */
+/* Intro-tekst boks over formularen */
 .contactIntro {
   background-color: #34626c;
   padding: 20px;
@@ -31,6 +42,7 @@
   margin-bottom: 30px;
 }
 
+/* Titel i intro-boksen */
 .contactIntro h2 {
   font-family: "Zen Loop", cursive;
   font-size: 2rem;
@@ -39,6 +51,7 @@
   text-align: center;
 }
 
+/* Brødtekst i intro-boksen */
 .contactIntro p {
   font-size: 0.9rem;
   line-height: 1.5;
@@ -46,20 +59,21 @@
   color: #ffffff;
 }
 
-/* Formularen */
+/* Formularen – kolonne-layout */
 .contactForm {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-/* Wrapper til felter */
+/* Wrapper til felter (giver plads til fejltekst) */
 .field {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
+/* Inputs / textarea / select – samlet look */
 .contactForm input,
 .contactForm select,
 .contactForm textarea {
@@ -72,19 +86,20 @@
   font-family: "Nanum Gothic", sans-serif;
 }
 
+/* Placeholder tekst – lysere grå */
 .contactForm input::placeholder,
 .contactForm textarea::placeholder {
   color: #b9c6c4;
 }
 
-/* Fejl */
+/* Fejltekst under felter */
 .fieldError {
   color: #ffe3e3;
   font-size: 0.85rem;
   line-height: 1.2;
 }
 
-/* Fokus-effekt */
+/* Fokus-effekt (tilgængelighed) */
 .contactForm input:focus,
 .contactForm select:focus,
 .contactForm textarea:focus {
@@ -92,19 +107,21 @@
   outline-offset: 1px;
 }
 
-/* Success-besked */
+/* Success-besked (legacy – før successBox blev lavet) */
 .successText {
   margin-top: 16px;
   text-align: center;
 }
 
-/* Link-knap "Se mine beskeder" */
+/* Link-knap "Se mine beskeder" wrapper
+   Desktop: højre side */
 .contactTools {
   margin-top: 24px;
   display: flex;
   justify-content: flex-end;
 }
 
+/* Selve linket/knappen */
 .msgLink {
   display: inline-block;
   padding: 14px 40px;
@@ -133,6 +150,11 @@
   }
 }
 
+/* =======================================================
+   DEL 2: BASIC layout (DUPLIKAT fra tidligere version)
+   ⚠️ Beholdt 1:1 som i din fil pga. linjetal/krav.
+   ======================================================= */
+
 /* basic layout – hvis du allerede har noget tilsvarende, behold det */
 .contactMain {
   background-color: #34626c;
@@ -141,11 +163,13 @@
   font-family: "Nanum Gothic", sans-serif;
 }
 
+/* ekstra wrapper til centrering */
 .contactSection {
   max-width: 600px;
   margin: 0 auto;
 }
 
+/* dublet intro-boks */
 .contactIntro {
   padding: 20px;
   border-radius: 60px 0 60px 0;
@@ -166,7 +190,7 @@
   text-align: center;
 }
 
-/* form + felter */
+/* form + felter (dublet) */
 .contactForm {
   display: flex;
   flex-direction: column;
@@ -196,7 +220,7 @@
   color: #b9c6c4;
 }
 
-/* select dropdown */
+/* select dropdown (dublet) */
 .contactForm select {
   appearance: none;
 }
@@ -211,6 +235,7 @@
   font-size: 0.85rem;
 }
 
+/* gammel submit-knap (vanilla) */
 .submitBtn {
   align-self: center;
   border-radius: 50px 0 50px 0;
@@ -224,18 +249,20 @@
   margin-top: 20px;
 }
 
+/* success tekst (dublet) */
 .contactSuccess {
   margin-top: 12px;
   text-align: center;
 }
 
-/* "Se mine beskeder (0)" */
+/* "Se mine beskeder (0)" wrapper (dublet) */
 .contactTools {
   margin-top: 24px;
   display: flex;
   justify-content: center;
 }
 
+/* msgLink dublet (samme klasse) */
 .msgLink {
   display: inline-block;
   padding: 14px 40px;
@@ -256,10 +283,11 @@
   color: #fff;
 }
 
-/* ============================
-   GLOBAL BUTTON STYLE (CONTACT)
-   ============================ */
+/* =======================================================
+   DEL 3: GLOBAL BUTTON STYLE (CONTACT + MESSAGES)
+   ======================================================= */
 
+/* INDSEND + SLET + SLET ALLE (samme design) */
 .formButton,
 .deleteButton,
 .deleteAllButton {
@@ -286,14 +314,14 @@
   color: #ffffff;
 }
 
-/* IND SEND – midt på siden */
+/* IND SEND – centreret midt på siden */
 .submitWrap {
   display: flex;
   justify-content: center;
   margin-top: 20px;
 }
 
-/* "Se mine beskeder" */
+/* "Se mine beskeder" (større størrelse i React-versionen) */
 .msgLink {
   display: inline-block;
   padding: 14px 40px;
@@ -313,7 +341,7 @@
   color: #fff;
 }
 
-/* MESSAGE PAGE BUTTONS */
+/* MESSAGE PAGE BUTTONS (smal slet-knap) */
 .msgDelete {
   padding: 14px 30px;
   border-radius: 50px 0 50px 0;
@@ -331,6 +359,10 @@
   border-color: #ffffff;
   color: #ffffff;
 }
+
+/* =======================================================
+   DEL 4: SuccessBox (personlig tak efter submit)
+   ======================================================= */
 
 .successBox {
   margin: 32px auto 0;
