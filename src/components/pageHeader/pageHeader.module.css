@@ -1,25 +1,50 @@
+/* ============================================================
+   PAGE HEADER (Hero)
+   Denne CSS styrer hero-sektionen på alle sider.
+   Baggrundsbilledet sættes dynamisk via inline-style i PageHeader.jsx.
+   Derfor skal background-image IKKE ligge her.
+   ============================================================ */
+
 .header {
+  /* Layout og centrering af indhold */
   display: flex;
   flex-direction: column;
-  gap: 50px;
-  background-image: url("../../assets/image_00.jpg"); /* ← DENNE SKAL VÆK */
-  background-position: center;
-  background-color: rgb(94, 94, 94);
-  background-size: cover;
-  background-blend-mode: soft-light;
-  min-height: 60vh;
   align-items: center;
+  gap: 50px;
+
+  /* Hero-højde og spacing */
+  min-height: 60vh;
   padding: 50px 0;
 
-  img {
-    width: 72px;
-  }
+  /* Fjernet hardcoded hero-baggrund
+     (PageHeader.jsx sætter dynamic bg via inline styles) */
 
-  h1 {
-    font-size: 64px;
-    span {
-      font-size: 96px;
-      display: block;
-    }
-  }
+  /* Fallback-farve bag billedet */
+  background-color: rgb(94, 94, 94);
+
+  /* Hvis billedet er mørkt → gør overlayet mere blødt */
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: soft-light;
+}
+
+/* ============================================================
+   Logo i heroen (vises kun på forsiden)
+   ============================================================ */
+.header img {
+  width: 72px;
+}
+
+/* ============================================================
+   Hero-titler: Gittes / Glamping (store og elegante)
+   ============================================================ */
+.header h1 {
+  font-size: 64px;
+  text-align: center;
+}
+
+/* Under-titel (titleTwo) vises som større tekst under første linje */
+.header h1 span {
+  display: block;
+  font-size: 96px;
 }
