@@ -1,10 +1,25 @@
+/* ==========================================================================
+   src/components/button/button.module.css
+   --------------------------------------------------------------------------
+   CSS-module der styrer udseendet af vores genanvendelige Button-komponent.
+   Da filen er et CSS Module, bliver klassernes navne automatisk "scope'et"
+   til denne komponent og kan derfor ikke konflikte med andre styles.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   .button – Basis-styles for ALLE knapper i projektet
+   - Rundet form ifølge designet (pilform: 50px 0)
+   - Baggrundsfarven er standard-glamping-teal (#829b97)
+   - Teksten indeni er stylet gennem <p>-elementet i Button.jsx
+   -------------------------------------------------------------------------- */
 .button {
   padding: 0 30px;
   border-radius: 50px 0;
   background-color: #829b97;
   border: none;
-  font-size: 48px;
+  font-size: 48px; /* følger Zen Loop-designet */
 
+  /* Tekst inde i knappen (Button.jsx wrapper teksten i <p>) */
   p {
     text-transform: uppercase;
     color: white;
@@ -13,11 +28,17 @@
   }
 }
 
+/* --------------------------------------------------------------------------
+   .transparent – Variant bruges især i hero-sektionen
+   - Gennemsigtig baggrund
+   - Hvid kant for at matche designet over hero-billederne
+   - Ekstra margin på teksten for korrekt vertikal alignment
+   -------------------------------------------------------------------------- */
 .transparent {
   background: none;
   border: 1px solid white;
 
   p {
-    margin: 30px 0;
+    margin: 30px 0; /* giver luft så knappen matcher designets størrelse */
   }
 }
