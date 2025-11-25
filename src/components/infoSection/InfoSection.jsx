@@ -65,8 +65,9 @@ vores wellnessaktiviteter.`,
     const fetchData = async () => {
       try {
         const res = await fetch(
-          "https://glamping-rqu9j.ondigitalocean.app/about/"
-        );
+  "https://glamping-rqu9j.ondigitalocean.app/about"
+);
+
         if (!res.ok) throw new Error("API-fejl");
 
         const json = await res.json();
