@@ -22,12 +22,12 @@ const Reviews = () => {
     const fetchReviews = async () => {
       try {
         const response = await fetch(
-          "https://glamping-rqu9j.ondigitalocean.app/reviews"
+          "http://localhost:3042/reviews"
         );
         const data = await response.json();
 
-        // API’et returnerer { data: [...] }
-        setReviews(data.data);
+        // API'et returnerer { data: [...] } eller direkte array
+        setReviews(data.data ?? data);
       } catch (error) {
         console.log(error);
       }

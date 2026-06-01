@@ -25,14 +25,14 @@ const StaysSection = () => {
   const fetchStays = async () => {
     try {
       const response = await fetch(
-        "https://glamping-rqu9j.ondigitalocean.app/stays"
+        "http://localhost:3042/stays"
       );
 
       const data = await response.json();
 
       console.log(data); // Debug: viser hvad API’et returnerer
 
-      setStays(data.data); // Gemmer listen af ophold i state
+      setStays(data.data ?? data); // Gemmer listen af ophold i state
     } catch (error) {
       console.log("Fejl ved hentning af ophold:", error);
     }

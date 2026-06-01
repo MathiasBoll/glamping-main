@@ -34,14 +34,15 @@ const StayDetails = () => {
     try {
       // Henter data fra API’et med det valgte id
       const response = await fetch(
-        `https://glamping-rqu9j.ondigitalocean.app/stay/${id}`
+        `http://localhost:3042/stays`
       );
 
       // Konverterer til JSON
       const data = await response.json();
 
-      // API returnerer et array i data.data → vi tager første element
-      setStay(data.data[0]);
+      // Find det ophold der matcher id'et
+      const list = data?.data || data || [];
+      setStay(list.find((s) => String(s.id) === String(id)) || null);
     } catch (error) {
       // Hvis API fejler, logger vi fejlen i console
       console.log(error);

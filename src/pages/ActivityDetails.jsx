@@ -13,7 +13,7 @@ import styles from "../components/activities/activities.module.css";
 import heroImg from "../assets/image_04.jpg";
 
 // API endpoint til at hente alle aktiviteter
-const API_URL = "https://glamping-rqu9j.ondigitalocean.app/activities/";
+const API_URL = "http://localhost:3042/activities";
 
 /*
   ActivityDetails viser én aktivitet baseret på URL-id:

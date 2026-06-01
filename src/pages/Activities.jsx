@@ -38,7 +38,7 @@ const Activities = () => {
     const fetchActivities = async () => {
       try {
         const res = await fetch(
-          "https://glamping-rqu9j.ondigitalocean.app/activities/"
+          "http://localhost:3042/activities"
         );
 
         // Hvis API’et svarer med fejlstatus → kast fejl
@@ -47,7 +47,7 @@ const Activities = () => {
         }
 
         const json = await res.json();
-        const list = json?.data || [];
+        const list = json?.data ?? json ?? [];
 
         // Gem aktiviteter i state
         setActivities(list);

@@ -61,33 +61,7 @@ vores wellnessaktiviteter.`,
    * Hvis API’et lykkes → opdateres titel, body og CTA.
    * Billedet kommer altid fra assets-mappen (ikke API).
    */
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch(
-  "https://glamping-rqu9j.ondigitalocean.app/about"
-);
-
-        if (!res.ok) throw new Error("API-fejl");
-
-        const json = await res.json();
-        const first = json?.data?.[0];
-
-        if (first) {
-          setContent((prev) => ({
-            title: first.title || prev.title,
-            body: first.body || prev.body,
-            ctaText: first.ctaText || prev.ctaText,
-            image: prev.image, // API leverer ikke billeder
-          }));
-        }
-      } catch (err) {
-        console.warn("[InfoSection] API fejlede – bruger fallback:", err);
-      }
-    };
-
-    fetchData();
-  }, []);
+  // Ingen /about-route på lokal server – bruger fallback direkte
 
   // Her styres hvilke værdier der faktisk vises (override > API > fallback)
   const title = titleOverride ?? content.title;
