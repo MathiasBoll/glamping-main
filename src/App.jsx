@@ -15,6 +15,7 @@ import StayDetails from "./components/stayDetails/StayDetails";
 import LikedActivities from "./pages/LikedActivities.jsx";
 import Contact from "./pages/Contact.jsx";
 import Messages from "./pages/Messages.jsx";
+import Backoffice from "./pages/Backoffice.jsx";
 
 // Navigation og Footer er globale komponenter på ALLE sider
 import Navigation from "./components/navigation/Navigation";
@@ -39,6 +40,8 @@ function App() {
 
     { path: "/contact", element: <Contact /> },       // Kontaktformular
     { path: "/messages", element: <Messages /> },     // Mine beskeder (fra kontakt)
+
+    { path: "/backoffice", element: <Backoffice /> }, // Admin-dashboard (activities CRUD)
   ]);
 
   return (
