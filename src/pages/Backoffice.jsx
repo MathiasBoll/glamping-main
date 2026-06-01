@@ -6,19 +6,23 @@
 // ─────────────────────────────────────────────────────────
 
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import {
     getAdminActivities,
     createActivity,
     updateActivity,
     deleteActivity,
 } from '../services/activityAdminService';
+import { logAdminUd, hentAdminBruger } from '../utils/adminAuth';
 import styles from './Backoffice.module.css';
 
 // Tomt formular-objekt — bruges til at nulstille formen
 const EMPTY_FORM = { title: '', date: '', time: '', description: '', image: '' };
 
 const Backoffice = () => {
+    const navigate = useNavigate();
+    const adminBruger = hentAdminBruger();
+
     // Liste af aktiviteter fra backend
     const [activities, setActivities] = useState([]);
 
@@ -133,12 +137,16 @@ const Backoffice = () => {
             <div className={styles.header}>
                 <div>
                     <h1 className={styles.title}>Backoffice</h1>
-                    {/* Badge der minder om at login kommer senere */}
-                    <span className={styles.badge}>Backoffice eksempel — login kommer senere</span>
+                    <span className={styles.badge}>Logget ind som {adminBruger?.visningsNavn ?? 'Admin'}</span>
                 </div>
                 <div className={styles.headerActions}>
                     <Link to="/" className={styles.backLink}>← Tilbage til frontend</Link>
-                    <button className={styles.btnDisabled} disabled>Rediger subscribers</button>
+                    <button
+                        className={styles.btnDelete}
+                        onClick={() => { logAdminUd(); navigate('/backoffice/login'); }}
+                    >
+                        Log ud
+                    </button>
                 </div>
             </div>
 
