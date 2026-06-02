@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import styles from "./backend.module.css";
 
 const API = "http://localhost:3042";
+const ADMIN_TOKEN = "glamping-admin-2026";
+const AUTH = { Authorization: `Bearer ${ADMIN_TOKEN}` };
 
-const TABS = ["Beskeder", "Anmeldelser", "Aktiviteter", "Ophold"];
+const TABS = ["Beskeder", "Anmeldelser", "Aktiviteter", "Ophold", "Bookinger"];
 
 const Backend = () => {
   const [activeTab, setActiveTab] = useState("Beskeder");
@@ -28,6 +30,9 @@ const Backend = () => {
     title: "", numberOfPersons: "", price: "", image: "", teaser: "",
   });
 
+  // ── Bookings ──
+  const [bookings, setBookings] = useState([]);
+
   // ── Fetch on mount ──
   useEffect(() => { fetchMessages(); }, []);
   useEffect(() => {
@@ -35,29 +40,32 @@ const Backend = () => {
     if (activeTab === "Aktiviteter") fetchActivities();
     if (activeTab === "Ophold") fetchStays();
     if (activeTab === "Beskeder") fetchMessages();
+    if (activeTab === "Bookinger") fetchBookings();
   }, [activeTab]);
 
   const fetchMessages = () =>
-    fetch(`${API}/admin/messages`).then(r => r.json()).then(setMessages);
+    fetch(`${API}/admin/messages`, { headers: AUTH }).then(r => r.json()).then(setMessages);
   const fetchReviews = () =>
-    fetch(`${API}/reviews`).then(r => r.json()).then(setReviews);
+    fetch(`${API}/admin/reviews`, { headers: AUTH }).then(r => r.json()).then(setReviews);
   const fetchActivities = () =>
     fetch(`${API}/activities`).then(r => r.json()).then(setActivities);
   const fetchStays = () =>
     fetch(`${API}/stays`).then(r => r.json()).then(setStays);
+  const fetchBookings = () =>
+    fetch(`${API}/admin/bookings`, { headers: AUTH }).then(r => r.json()).then(setBookings);
 
   // ── Message actions ──
   const updateStatus = (id, status) =>
     fetch(`${API}/admin/messages/${id}/status`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...AUTH },
       body: JSON.stringify({ status }),
     }).then(fetchMessages);
 
   const sendReply = (id) =>
     fetch(`${API}/admin/messages/${id}/reply`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...AUTH },
       body: JSON.stringify({ reply: replyText[id] }),
     }).then(() => {
       setReplyText(prev => ({ ...prev, [id]: "" }));
@@ -66,7 +74,7 @@ const Backend = () => {
     });
 
   const deleteMessage = (id) =>
-    fetch(`${API}/admin/messages/${id}`, { method: "DELETE" }).then(fetchMessages);
+    fetch(`${API}/admin/messages/${id}`, { method: "DELETE", headers: AUTH }).then(fetchMessages);
 
   // ── Review actions ──
   const toggleReviewVisibility = (review) =>
@@ -111,11 +119,24 @@ const Backend = () => {
   const deleteStay = (id) =>
     fetch(`${API}/stays/${id}`, { method: "DELETE" }).then(fetchStays);
 
+  // ── Booking actions ──
+  const updateBookingStatus = (id, status) =>
+    fetch(`${API}/admin/bookings/${id}/status`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...AUTH },
+      body: JSON.stringify({ status }),
+    }).then(fetchBookings);
+
+  const deleteBooking = (id) =>
+    fetch(`${API}/admin/bookings/${id}`, { method: "DELETE", headers: AUTH }).then(fetchBookings);
+
   const statusBadgeClass = (status) => {
     if (status === "ny") return styles.badgeNy;
     if (status === "læst") return styles.badgeLaest;
     if (status === "besvaret") return styles.badgeBesvaret;
     if (status === "arkiveret") return styles.badgeArkiveret;
+    if (status === "bekræftet") return styles.badgeBesvaret;
+    if (status === "aflyst") return styles.badgeArkiveret;
     return "";
   };
 
@@ -276,6 +297,34 @@ const Backend = () => {
                 {s.teaser && <p className={styles.cardBody}>{s.teaser}</p>}
                 <div className={styles.cardActions}>
                   <button onClick={() => deleteStay(s.id || s._id)} className={styles.btnDanger}>Slet</button>
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* ── BOOKINGER ── */}
+        {activeTab === "Bookinger" && (
+          <section>
+            <h3>Bookinger ({bookings.length})</h3>
+            {bookings.length === 0 && <p className={styles.empty}>Ingen bookinger endnu.</p>}
+            {bookings.map(b => (
+              <div key={b.id} className={styles.card}>
+                <div className={styles.cardTop}>
+                  <span className={styles.cardName}>{b.name}</span>
+                  <span className={styles.cardMeta}>{b.email}</span>
+                  <span className={styles.cardMeta}>— {b.stayTitle}</span>
+                  <span className={`${styles.badge} ${statusBadgeClass(b.status)}`}>{b.status}</span>
+                  <span className={styles.cardDate}>{new Date(b.created).toLocaleDateString("da-DK")}</span>
+                </div>
+                <p className={styles.cardBody}>
+                  Ind: {b.checkIn} · Ud: {b.checkOut} · {b.guests} gæst(er)
+                </p>
+                {b.message && <p className={styles.cardBody}><em>{b.message}</em></p>}
+                <div className={styles.cardActions}>
+                  <button onClick={() => updateBookingStatus(b.id, "bekræftet")} className={styles.btnPrimary}>Bekræft</button>
+                  <button onClick={() => updateBookingStatus(b.id, "aflyst")} className={styles.btnSecondary}>Aflys</button>
+                  <button onClick={() => deleteBooking(b.id)} className={styles.btnDanger}>Slet</button>
                 </div>
               </div>
             ))}
