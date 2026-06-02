@@ -80,3 +80,81 @@
 .footerText {
   font-size: 40px;                 /* stor, dekorativ font */
 }
+
+/* ============================================================================
+   NYHEDSBREV
+   ============================================================================ */
+
+.newsletter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.newsletterTitle {
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.newsletterForm {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.newsletterInput {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.9rem;
+  width: 240px;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  outline: none;
+}
+
+.newsletterInput::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.newsletterInput:focus {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.newsletterBtn {
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-family: inherit;
+}
+
+.newsletterBtn:hover:not(:disabled) {
+  background: white;
+  color: #2a4f57;
+}
+
+.newsletterBtn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.newsletterSuccess {
+  font-size: 0.85rem;
+  color: #86efac;
+  margin: 0;
+}
+
+.newsletterError {
+  font-size: 0.85rem;
+  color: #fca5a5;
+  margin: 0;
+}

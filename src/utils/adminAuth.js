@@ -8,10 +8,10 @@
 const SESSION_KEY = 'glamping-admin-session'
 
 // Hardkodet admin-bruger
-// Brugernavn: admin  |  Adgangskode: glamping2025
+// Brugernavn: admin  |  Adgangskode: glamping2026
 const ADMIN_BRUGER = {
   brugernavn: 'admin',
-  adgangskode: 'glamping2025',
+  adgangskode: 'glamping2026',
   visningsNavn: 'Gitte',
 }
 

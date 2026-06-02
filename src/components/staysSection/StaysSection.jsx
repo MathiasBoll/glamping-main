@@ -32,7 +32,9 @@ const StaysSection = () => {
 
       console.log(data); // Debug: viser hvad API’et returnerer
 
-      setStays(data.data ?? data); // Gemmer listen af ophold i state
+      // Filtrer skjulte ophold fra (isActive !== false)
+      const list = data.data ?? data;
+      setStays(list.filter(s => s.isActive !== false));
     } catch (error) {
       console.log("Fejl ved hentning af ophold:", error);
     }

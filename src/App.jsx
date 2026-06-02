@@ -1,7 +1,7 @@
 // src/App.jsx
 
 // useRoutes gør det muligt at definere alle routes i én samlet konfiguration
-import { useRoutes } from "react-router";
+import { useRoutes, useLocation } from "react-router";
 
 // Global styling for app-wrapperen
 import "./App.css";
@@ -14,7 +14,6 @@ import ActivityDetails from "./pages/ActivityDetails.jsx";
 import StayDetails from "./components/stayDetails/StayDetails";
 import LikedActivities from "./pages/LikedActivities.jsx";
 import Contact from "./pages/Contact.jsx";
-import Messages from "./pages/Messages.jsx";
 import Backoffice from "./pages/Backoffice.jsx";
 import BackofficeLogin from "./pages/BackofficeLogin.jsx";
 import BeskyttetRute from "./components/admin/BeskyttetRute.jsx";
@@ -43,7 +42,6 @@ function App() {
     { path: "/liked", element: <LikedActivities /> }, // Gemte (likede) aktiviteter
 
     { path: "/contact", element: <Contact /> },       // Kontaktformular
-    { path: "/messages", element: <Messages /> },     // Mine beskeder (fra kontakt)
 
     // Backoffice er beskyttet — kræver login via /backoffice/login
     { path: "/backoffice/login", element: <BackofficeLogin /> },
@@ -57,21 +55,19 @@ function App() {
     { path: "/backend", element: <Backend /> },
   ]);
 
+  const { pathname } = useLocation();
+  const isBackoffice = pathname.startsWith('/backoffice');
+
   return (
-    // App-wrapper som holder header, main og footer samlet
     <div className="app">
+      {/* Navigation og Footer skjules på backoffice-sider */}
+      {!isBackoffice && <Navigation />}
 
-      {/* Navigation ligger altid øverst – også på single-sider */}
-      <Navigation />
-
-      {/* Toast-container: bruges til feedback ved fx kontaktform */}
       <ToastContainer position="top-center" theme="colored" />
 
-      {/* Hovedindhold – routes inde i <main> hjælper SEO og struktur */}
       <main>{routes}</main>
 
-      {/* Footer vises på ALLE sider */}
-      <Footer />
+      {!isBackoffice && <Footer />}
     </div>
   );
 }

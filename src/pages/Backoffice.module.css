@@ -251,6 +251,72 @@
     background: #fee2e2;
 }
 
+.btnSave {
+    padding: 0.4rem 1rem;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.btnSave:hover:not(:disabled) {
+    background: #1d4ed8;
+}
+.btnSave:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.btnCancel {
+    padding: 0.4rem 1rem;
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.btnCancel:hover {
+    background: #e5e7eb;
+}
+
+/* ── Tab-navigation ── */
+.tabs {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 0;
+}
+
+.tab {
+    padding: 0.65rem 1.25rem;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #6b7280;
+    cursor: pointer;
+    margin-bottom: -2px;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.tab:hover {
+    color: #2563eb;
+}
+
+.tabActive {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+    font-weight: 600;
+}
+
 /* ── Responsivt layout til mobil ── */
 @media (max-width: 640px) {
     .header {

@@ -37,8 +37,6 @@ import Swal from "sweetalert2";
 // Ikon til success-boks
 import { FiCheckCircle } from "react-icons/fi";
 
-// LocalStorage keys (samme nøgle som Messages-siden bruger)
-const STORAGE_KEY = "sentMessages";
 const SELECTED_STAY_KEY = "selectedStay";
 
 // Kontakt-endpoint fra opgaven
@@ -75,19 +73,7 @@ const schema = yup.object({
     .min(10, "Beskeden skal være mindst 10 tegn."),
 });
 
-// Hjælpefunktioner til localStorage (Mine beskeder)
-const readMessages = () =>
-  JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-
-const writeMessages = (arr) =>
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-
 const Contact = () => {
-  /*
-    msgCount → viser hvor mange beskeder der er gemt i localStorage
-    submitted / successName → bruges til den personlige tak-boks under formularen
-  */
-  const [msgCount, setMsgCount] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [successName, setSuccessName] = useState("");
 
@@ -119,10 +105,6 @@ const Contact = () => {
   // Bruges til at holde øje med hvad brugeren har valgt i dropdown
   const watchedCategory = watch("category");
 
-  // Ved load: opdater counter til “Mine beskeder”
-  useEffect(() => {
-    setMsgCount(readMessages().length);
-  }, []);
 
   /*
     Hydrate dropdown:
@@ -171,11 +153,10 @@ const Contact = () => {
   /*
     onSubmit:
       1) Byg payload til API
-      2) POST
-      3) Gem i localStorage (Mine beskeder)
-      4) Vis personlig tak + reset form
-      5) Modal feedback (SweetAlert2)
-      6) Toast feedback (react-toastify)
+      2) POST til eksternt API + fire-and-forget til lokal backend
+      3) Vis personlig tak + reset form
+      4) Modal feedback (SweetAlert2)
+      5) Toast feedback (react-toastify)
   */
   const onSubmit = async (data) => {
     setSubmitted(false);
@@ -212,12 +193,13 @@ const Contact = () => {
       return;
     }
 
-    // 2) Gem beskeden lokalt til “Mine beskeder”
-    const entry = { ...payload, ts: Date.now() };
-    const list = readMessages();
-    list.push(entry);
-    writeMessages(list);
-    setMsgCount(list.length);
+    // 2) Fire-and-forget POST til lokal backend (backoffice-beskeder)
+    const localApiUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:3042') + '/contact';
+    fetch(localApiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...payload, created: new Date().toISOString() }),
+    }).catch(() => { /* stille fejl — lokal backend er valgfri */ });
 
     // 3) Personlig tak-besked
     setSuccessName(payload.name);
@@ -376,12 +358,7 @@ const Contact = () => {
           )}
         </form>
 
-        {/* Link til “Mine beskeder” + counter */}
-        <div className={styles.contactTools}>
-          <a href="/messages" className={styles.msgLink}>
-            Se mine beskeder ({msgCount})
-          </a>
-        </div>
+
       </main>
     </>
   );

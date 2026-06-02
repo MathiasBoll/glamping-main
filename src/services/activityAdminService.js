@@ -36,3 +36,11 @@ export const deleteActivity = (id) => {
         method: 'DELETE',
     });
 };
+
+// Slå aktivitet til/fra (isActive: true/false)
+export const toggleActivityActive = (id, isActive) => {
+    return apiClient(`/activities/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ isActive }),
+    });
+};

@@ -172,17 +172,6 @@ const Navigation = () => {
         >
           Kontakt
         </NavLink>
-
-        {/* Mine beskeder – gemte formular-beskeder */}
-        <NavLink
-          to="/messages"
-          className={({ isActive }) =>
-            `${styles.menuLink} ${isActive ? styles.menuLinkActive : ""}`
-          }
-          onClick={closeMenu}
-        >
-          Mine beskeder
-        </NavLink>
       </nav>
     </>
   );

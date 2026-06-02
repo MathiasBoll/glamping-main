@@ -49,8 +49,8 @@ const Activities = () => {
         const json = await res.json();
         const list = json?.data ?? json ?? [];
 
-        // Gem aktiviteter i state
-        setActivities(list);
+        // Gem aktiviteter i state (filtrer skjulte fra)
+        setActivities(list.filter(a => a.isActive !== false));
         setError(null);
       } catch (err) {
         console.error("[Activities] API-fejl:", err);
