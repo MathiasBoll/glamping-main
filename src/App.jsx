@@ -31,7 +31,6 @@ function App() {
   // useRoutes læser et array af route-objekter og returnerer
   // den komponent som matcher URL’en. Det fungerer som et mini-router-setup.
   const routes = useRoutes([
-<<<<<<< HEAD
     { path: "/", element: <Home /> },                 // Forside
     { path: "/stays", element: <Stays /> },           // Oversigt over ophold
     { path: "/stay/:id", element: <StayDetails /> },  // Single stay side
