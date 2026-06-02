@@ -1,0 +1,256 @@
+.backend {
+  min-height: 100vh;
+  background-color: #ced3cd;
+  color: #1a1a1a;
+}
+
+.header {
+  background-color: #2a4f57;
+  padding: 30px 40px;
+  text-align: left;
+
+  h2 {
+    font-family: "Zen Loop", cursive;
+    font-size: 48px;
+    font-weight: 200;
+    color: white;
+  }
+}
+
+.tabs {
+  display: flex;
+  gap: 0;
+  background-color: #1e3a40;
+  padding: 0 40px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 14px 24px;
+  color: #9bbec4;
+  font-family: "Nanum Gothic", sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.activeTab {
+  color: white;
+  border-bottom: 3px solid #829b97;
+}
+
+.content {
+  padding: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+
+  h3 {
+    font-family: "Zen Loop", cursive;
+    font-size: 36px;
+    font-weight: 200;
+    color: #2a4f57;
+    margin-bottom: 24px;
+    line-height: 1.2;
+  }
+}
+
+/* ── Cards ── */
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.cardHidden {
+  opacity: 0.5;
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.cardName {
+  font-weight: 700;
+  font-size: 16px;
+  color: #1a1a1a;
+}
+
+.cardMeta {
+  font-size: 14px;
+  color: #666;
+}
+
+.cardDate {
+  font-size: 13px;
+  color: #999;
+  margin-left: auto;
+}
+
+.cardBody {
+  font-size: 15px;
+  color: #333;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+/* ── Badges ── */
+.badge {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badgeNy        { background: #dceeff; color: #1a5fa8; }
+.badgeLaest     { background: #e8e8e8; color: #555; }
+.badgeBesvaret  { background: #d4edda; color: #2a6a3a; }
+.badgeArkiveret { background: #f5e0e0; color: #8a2525; }
+
+/* ── Buttons ── */
+.cardActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btnPrimary {
+  background-color: #2a4f57;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-family: "Nanum Gothic", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #1e3a40;
+  }
+}
+
+.btnSecondary {
+  background-color: #829b97;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-family: "Nanum Gothic", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #6d8480;
+  }
+}
+
+.btnDanger {
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-family: "Nanum Gothic", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: auto;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #a93226;
+  }
+}
+
+/* ── Reply box ── */
+.replyBox {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: "Nanum Gothic", sans-serif;
+    font-size: 14px;
+    resize: vertical;
+  }
+}
+
+.replyPreview {
+  font-size: 14px;
+  color: #2a6a3a;
+  background: #d4edda;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+/* ── Form ── */
+.form {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+  h4 {
+    font-family: "Zen Loop", cursive;
+    font-size: 22px;
+    font-weight: 200;
+    color: #2a4f57;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  input,
+  textarea {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: "Nanum Gothic", sans-serif;
+    font-size: 14px;
+    color: #1a1a1a;
+    background: #fafafa;
+
+    &:focus {
+      outline: none;
+      border-color: #829b97;
+    }
+  }
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.empty {
+  color: #777;
+  font-style: italic;
+  text-align: center;
+  padding: 40px 0;
+}
