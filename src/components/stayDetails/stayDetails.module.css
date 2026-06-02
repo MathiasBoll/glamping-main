@@ -84,3 +84,111 @@
 .buttonWrap {
   margin-top: 8px;
 }
+
+/* =====================================================
+   BOOKING FORMULAR
+   ===================================================== */
+.bookingSection {
+  max-width: 700px;
+  margin: 2.5rem auto;
+  padding: 2rem 1.5rem;
+}
+
+.bookingTitle {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  color: #1a1a1a;
+}
+
+.bookingForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.formRow {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+  min-width: 180px;
+}
+
+.formGroup label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.formInput {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #2d6a4f;
+}
+
+.formTextarea {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.formTextarea:focus {
+  outline: none;
+  border-color: #2d6a4f;
+}
+
+.formSubmit {
+  padding: 0.75rem 1.5rem;
+  background: #2d6a4f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.2s;
+}
+
+.formSubmit:hover {
+  background: #1e4d39;
+}
+
+.formSubmit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.bookingSuccess {
+  color: #15803d;
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.bookingError {
+  color: #991b1b;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}

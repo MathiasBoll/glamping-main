@@ -7,9 +7,9 @@
 
 import apiClient from './apiClient';
 
-// Hent alle beskeder sorteret nyeste først
-export const getAdminMessages = () => {
-    return apiClient('/admin/messages');
+// Hent beskeder sorteret nyeste først — støtter ?page=&limit=
+export const getAdminMessages = (page = 1, limit = 20) => {
+    return apiClient(`/admin/messages?page=${page}&limit=${limit}`);
 };
 
 // Opdater status på en besked (ny | læst | besvaret | arkiveret)

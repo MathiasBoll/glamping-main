@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3042';
+const ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN || 'glamping-admin-2026';
 
 // Hjælpefunktion der wrapper fetch med fejlhåndtering
 // og automatisk JSON-parsing.
@@ -13,7 +14,10 @@ const apiClient = async (endpoint, options = {}) => {
     const url = `${BASE_URL}${endpoint}`;
 
     const response = await fetch(url, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${ADMIN_TOKEN}`,
+        },
         ...options,
     });
 

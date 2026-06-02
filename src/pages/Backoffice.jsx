@@ -1,9 +1,9 @@
 // src/pages/Backoffice.jsx
 // ─────────────────────────────────────────────────────────
-// Backoffice-dashboard med 4 faner:
-//   Aktiviteter | Ophold | Beskeder | Anmeldelser
-// Kræver admin-login (BeskyttetRute).
-// ─────────────────────────────────────────────────────────
+// Backoffice-dashboard med 6 faner:
+//   Aktiviteter | Ophold | Beskeder | Anmeldelser | Abonnenter | Bookinger
+// Kræver admin-login (BeskældetRute).
+// ─────────────────────────────────────────────────────
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
@@ -13,6 +13,7 @@ import TabOphold from '../components/admin/TabOphold';
 import TabBeskeder from '../components/admin/TabBeskeder';
 import TabAnmeldelser from '../components/admin/TabAnmeldelser';
 import TabAbonnenter from '../components/admin/TabAbonnenter';
+import TabBookinger from '../components/admin/TabBookinger';
 import styles from './Backoffice.module.css';
 
 const TABS = [
@@ -21,6 +22,7 @@ const TABS = [
     { id: 'beskeder', label: 'Beskeder' },
     { id: 'anmeldelser', label: 'Anmeldelser' },
     { id: 'abonnenter', label: 'Abonnenter' },
+    { id: 'bookinger', label: 'Bookinger' },
 ];
 
 const Backoffice = () => {
@@ -67,6 +69,7 @@ const Backoffice = () => {
             {aktiveTab === 'beskeder' && <TabBeskeder />}
             {aktiveTab === 'anmeldelser' && <TabAnmeldelser />}
             {aktiveTab === 'abonnenter' && <TabAbonnenter />}
+            {aktiveTab === 'bookinger' && <TabBookinger />}
         </div>
     );
 };

@@ -13,9 +13,17 @@ export const subscribeNewsletter = (email) => {
     });
 };
 
-// Hent alle abonnenter (backoffice)
-export const getAdminSubscribers = () => {
-    return apiClient('/admin/subscribers');
+// Hent alle abonnenter (backoffice) — støtter ?page=&limit=
+export const getAdminSubscribers = (page = 1, limit = 20) => {
+    return apiClient(`/admin/subscribers?page=${page}&limit=${limit}`);
+};
+
+// Opdater abonnent-email (backoffice)
+export const updateSubscriber = (id, email) => {
+    return apiClient(`/admin/subscribers/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ email }),
+    });
 };
 
 // Slet abonnent (backoffice)

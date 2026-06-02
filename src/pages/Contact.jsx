@@ -271,7 +271,8 @@ const Contact = () => {
             </label>
             <input
               id="cf-email"
-              type="email"
+              type="text"
+              inputMode="email"
               placeholder="Email"
               autoComplete="email"
               {...register("email")}

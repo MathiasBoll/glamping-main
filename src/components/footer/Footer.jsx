@@ -53,7 +53,11 @@ const Footer = () => {
           <p className={styles.newsletterTitle}>Tilmeld dig vores nyhedsbrev</p>
           <form className={styles.newsletterForm} onSubmit={handleSubscribe}>
             <input
-              type="email"
+              type="text"
+              inputMode="email"
+              autoComplete="email"
+              pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+              title="Indtast en gyldig e-mailadresse"
               className={styles.newsletterInput}
               placeholder="Din e-mailadresse"
               value={email}
