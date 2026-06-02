@@ -3,7 +3,7 @@
 // Backoffice-fanen til styring af aktiviteter (Vis, Tilføj, Rediger, Slet).
 // ─────────────────────────────────────────────────────────
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     getAdminActivities,
     createActivity,
@@ -11,6 +11,7 @@ import {
     deleteActivity,
     toggleActivityActive,
 } from '../../services/activityAdminService';
+import { uploadImage } from '../../services/uploadService';
 import styles from '../../pages/Backoffice.module.css';
 
 const EMPTY_FORM = { title: '', date: '', time: '', description: '', image: '' };
@@ -22,6 +23,8 @@ const TabActiviteter = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const [uploading, setUploading] = useState(false);
+    const fileInputRef = useRef(null);
 
     useEffect(() => { loadActivities(); }, []);
 
@@ -50,6 +53,23 @@ const TabActiviteter = () => {
 
     const handleChange = (e) => {
         setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    };
+
+    const handleFileChange = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setUploading(true);
+        setError(null);
+        try {
+            const url = await uploadImage(file);
+            setForm(prev => ({ ...prev, image: url }));
+        } catch (err) {
+            setError('Billedet kunne ikke uploades: ' + err.message);
+        } finally {
+            setUploading(false);
+            // Nulstil input så samme fil kan vælges igen
+            if (fileInputRef.current) fileInputRef.current.value = '';
+        }
     };
 
     const handleEditClick = (activity) => {
@@ -122,7 +142,28 @@ const TabActiviteter = () => {
                     <input name="date" placeholder="Dato (fx Fredage og lørdage) *" value={form.date} onChange={handleChange} required />
                     <input name="time" placeholder="Tidspunkt (fx 15.00-17.00) *" value={form.time} onChange={handleChange} required />
                     <textarea name="description" placeholder="Beskrivelse *" value={form.description} onChange={handleChange} required rows={4} />
-                    <input name="image" placeholder="Billed-URL *" value={form.image} onChange={handleChange} required />
+                    <div className={styles.imageField}>
+                        <input
+                            name="image"
+                            placeholder="Billed-URL (indsæt link, eller upload herunder)"
+                            value={form.image}
+                            onChange={handleChange}
+                        />
+                        <label className={styles.fileInputBtn}>
+                            📷 Vælg billede fra enhed / kamerarulle
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                style={{ display: 'none' }}
+                            />
+                        </label>
+                        {uploading && <span className={styles.uploadingText}>Uploader...</span>}
+                        {form.image && !uploading && (
+                            <img src={form.image} alt="Forhåndsvisning" className={styles.imagePreview} />
+                        )}
+                    </div>
                     <div className={styles.formActions}>
                         <button type="submit" className={styles.btnPrimary}>
                             {editing ? 'Gem ændringer' : 'Tilføj aktivitet'}
@@ -141,54 +182,48 @@ const TabActiviteter = () => {
                 {loading && <p className={styles.loading}>Henter aktiviteter...</p>}
                 {!loading && activities.length === 0 && <p className={styles.empty}>Ingen aktiviteter fundet.</p>}
                 {!loading && activities.length > 0 && (
-                    <table className={styles.table}>
-                        <thead>
-                            <tr>
-                                <th>Billede</th>
-                                <th>Titel</th>
-                                <th>Dato</th>
-                                <th>Tidspunkt</th>
-                                <th>Synlig</th>
-                                <th>Handlinger</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {activities.map((activity) => (
-                                <tr key={activity._id || activity.id} style={activity.isActive === false ? { opacity: 0.5 } : {}}>
-                                    <td>
-                                        <img src={activity.image} alt={activity.title} className={styles.thumbnail} />
-                                    </td>
-                                    <td>{activity.title}</td>
-                                    <td>{activity.date}</td>
-                                    <td>{activity.time}</td>
-                                    <td style={{ textAlign: 'center' }}>
-                                        <span style={{
-                                            display: 'inline-block',
-                                            padding: '0.2rem 0.55rem',
-                                            borderRadius: '999px',
-                                            fontSize: '0.78rem',
-                                            fontWeight: 600,
-                                            background: activity.isActive === false ? '#f3f4f6' : '#dcfce7',
-                                            color: activity.isActive === false ? '#6b7280' : '#15803d',
-                                        }}>
-                                            {activity.isActive === false ? 'Skjult' : 'Synlig'}
-                                        </span>
-                                    </td>
-                                    <td className={styles.actions}>
-                                        <button onClick={() => handleToggleActive(activity)} className={styles.btnEdit}
-                                            style={activity.isActive === false
-                                                ? { background: '#f0fdf4', color: '#15803d', borderColor: '#86efac' }
-                                                : { background: '#fefce8', color: '#92400e', borderColor: '#fde68a' }
-                                            }>
-                                            {activity.isActive === false ? 'Vis' : 'Skjul'}
-                                        </button>
-                                        <button onClick={() => handleEditClick(activity)} className={styles.btnEdit}>Rediger</button>
-                                        <button onClick={() => handleDelete(activity)} className={styles.btnDelete}>Slet</button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <div className={styles.adminCards}>
+                        {activities.map((activity) => (
+                            <div
+                                key={activity._id || activity.id}
+                                className={`${styles.adminCard} ${activity.isActive === false ? styles.adminCardHidden : ''}`}
+                            >
+                                <div className={styles.adminCardRow}>
+                                    {activity.image && (
+                                        <img src={activity.image} alt={activity.title} className={styles.adminCardImg} />
+                                    )}
+                                    <div className={styles.adminCardBody}>
+                                        <div className={styles.adminCardTop}>
+                                            <span className={styles.adminCardName}>{activity.title}</span>
+                                            <span className={activity.isActive === false ? styles.adminBadgeHidden : styles.adminBadgeVisible}>
+                                                {activity.isActive === false ? 'Skjult' : 'Synlig'}
+                                            </span>
+                                        </div>
+                                        <div className={styles.adminCardChips}>
+                                            <span className={styles.adminChip}>
+                                                <span className={styles.adminChipLabel}>Dato</span>
+                                                <span className={styles.adminChipValue}>{activity.date}</span>
+                                            </span>
+                                            <span className={styles.adminChip}>
+                                                <span className={styles.adminChipLabel}>Tid</span>
+                                                <span className={styles.adminChipValue}>{activity.time}</span>
+                                            </span>
+                                        </div>
+                                        <div className={styles.adminCardActions}>
+                                            <button
+                                                onClick={() => handleToggleActive(activity)}
+                                                className={activity.isActive === false ? styles.adminBtnShow : styles.adminBtnHide}
+                                            >
+                                                {activity.isActive === false ? 'Vis' : 'Skjul'}
+                                            </button>
+                                            <button onClick={() => handleEditClick(activity)} className={styles.adminBtnEdit}>Rediger</button>
+                                            <button onClick={() => handleDelete(activity)} className={styles.adminBtnDanger}>Slet</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 )}
             </section>
         </div>

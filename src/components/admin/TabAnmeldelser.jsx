@@ -128,37 +128,36 @@ const TabAnmeldelser = () => {
                 {loading && <p className={styles.loading}>Henter anmeldelser...</p>}
                 {!loading && reviews.length === 0 && <p className={styles.empty}>Ingen anmeldelser fundet.</p>}
                 {!loading && reviews.length > 0 && (
-                    <table className={styles.table}>
-                        <thead>
-                            <tr>
-                                <th>Navn</th>
-                                <th>Alder</th>
-                                <th>Ophold</th>
-                                <th>Anmeldelse</th>
-                                <th>Handlinger</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {reviews.map((review) => (
-                                <tr key={review._id || review.id}>
-                                    <td>{review.name}</td>
-                                    <td>{review.age || '—'}</td>
-                                    <td>{review.stay || '—'}</td>
-                                    <td style={{ maxWidth: '260px' }}>
-                                        <span title={review.review}>
-                                            {review.review?.length > 80
-                                                ? review.review.slice(0, 80) + '…'
-                                                : review.review}
-                                        </span>
-                                    </td>
-                                    <td className={styles.actions}>
-                                        <button onClick={() => handleEditClick(review)} className={styles.btnEdit}>Rediger</button>
-                                        <button onClick={() => handleDelete(review)} className={styles.btnDelete}>Slet</button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <div className={styles.adminCards}>
+                        {reviews.map((review) => (
+                            <div key={review._id || review.id} className={styles.adminCard}>
+                                <div className={styles.adminCardTop}>
+                                    <span className={styles.adminCardName}>{review.name}</span>
+                                </div>
+                                {(review.age || review.stay) && (
+                                    <div className={styles.adminCardChips}>
+                                        {review.age && (
+                                            <span className={styles.adminChip}>
+                                                <span className={styles.adminChipLabel}>Alder</span>
+                                                <span className={styles.adminChipValue}>{review.age}</span>
+                                            </span>
+                                        )}
+                                        {review.stay && (
+                                            <span className={styles.adminChip}>
+                                                <span className={styles.adminChipLabel}>Ophold</span>
+                                                <span className={styles.adminChipValue}>{review.stay}</span>
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
+                                <p className={styles.adminCardQuote}>&ldquo;{review.review}&rdquo;</p>
+                                <div className={styles.adminCardActions}>
+                                    <button onClick={() => handleEditClick(review)} className={styles.adminBtnEdit}>Rediger</button>
+                                    <button onClick={() => handleDelete(review)} className={styles.adminBtnDanger}>Slet</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 )}
             </section>
         </div>

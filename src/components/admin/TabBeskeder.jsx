@@ -45,11 +45,14 @@ const TabBeskeder = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
-    const [replyingTo, setReplyingTo] = useState(null);   // id of message being replied to
+    const [replyingTo, setReplyingTo] = useState(null);
     const [replyText, setReplyText] = useState('');
     const [replySending, setReplySending] = useState(false);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [total, setTotal] = useState(0);
 
-    useEffect(() => { loadMessages(); }, []);
+    useEffect(() => { loadMessages(page); }, [page]);
 
     useEffect(() => {
         if (!success) return;
@@ -57,12 +60,14 @@ const TabBeskeder = () => {
         return () => clearTimeout(t);
     }, [success]);
 
-    const loadMessages = async () => {
+    const loadMessages = async (p = 1) => {
         setLoading(true);
         setError(null);
         try {
-            const data = await getAdminMessages();
-            setMessages(Array.isArray(data) ? data : []);
+            const result = await getAdminMessages(p);
+            setMessages(result.data || []);
+            setTotalPages(result.totalPages || 1);
+            setTotal(result.total || 0);
         } catch {
             setError('Kunne ikke hente beskeder. Er backend-serveren kørende på port 3042?');
         } finally {
@@ -134,7 +139,7 @@ const TabBeskeder = () => {
 
             <section className={styles.tableSection}>
                 <h2>
-                    Kontaktbeskeder ({messages.length})
+                    Kontaktbeskeder ({total})
                     {nyCount > 0 && (
                         <span style={{
                             marginLeft: '0.6rem',
@@ -156,124 +161,117 @@ const TabBeskeder = () => {
 
                 {loading && <p className={styles.loading}>Henter beskeder...</p>}
 
-                {!loading && messages.length === 0 && (
+                {!loading && total === 0 && (
                     <p className={styles.empty}>
                         Ingen beskeder endnu. Beskeder vises her når besøgende sender kontaktformularen.
                     </p>
                 )}
 
                 {!loading && messages.length > 0 && (
-                    <table className={styles.table}>
-                        <thead>
-                            <tr>
-                                <th>Navn</th>
-                                <th>Email</th>
-                                <th>Emne</th>
-                                <th>Besked</th>
-                                <th>Status</th>
-                                <th>Dato</th>
-                                <th>Handlinger</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {messages.map((msg) => (
-                                <>
-                                <tr key={msg.id}>
-                                    <td style={{ whiteSpace: 'nowrap' }}>{msg.name}</td>
-                                    <td>
-                                        <a href={`mailto:${msg.email}`} style={{ color: '#2563eb', textDecoration: 'none' }}>
-                                            {msg.email}
-                                        </a>
-                                    </td>
-                                    <td>{msg.category || '—'}</td>
-                                    <td style={{ maxWidth: '220px' }}>
-                                        <span title={msg.message}>
-                                            {msg.message?.length > 60
-                                                ? msg.message.slice(0, 60) + '…'
-                                                : msg.message}
-                                        </span>
-                                    </td>
-                                    <td><StatusBadge status={msg.status || 'ny'} /></td>
-                                    <td style={{ whiteSpace: 'nowrap', fontSize: '0.82rem', color: '#6b7280' }}>
-                                        {formatDate(msg.created)}
-                                    </td>
-                                    <td className={styles.actions}>
-                                        {(msg.status === 'ny' || !msg.status) && (
-                                            <button
-                                                onClick={() => handleStatusChange(msg, 'læst')}
-                                                className={styles.btnEdit}
-                                            >
-                                                Markér læst
-                                            </button>
-                                        )}
-                                        <button
-                                            onClick={() => replyingTo === msg.id ? cancelReply() : openReply(msg)}
-                                            className={styles.btnEdit}
-                                            style={{ background: '#eff6ff', color: '#1d4ed8', borderColor: '#93c5fd' }}
-                                        >
-                                            {replyingTo === msg.id ? 'Annuller' : 'Svar'}
-                                        </button>
-                                        <button onClick={() => handleDelete(msg)} className={styles.btnDelete}>
-                                            Slet
-                                        </button>
-                                    </td>
-                                </tr>
+                    <div className={styles.adminCards}>
+                        {messages.map((msg) => {
+                            const status = msg.status || 'ny';
+                            const borderColor = status === 'besvaret' ? '#22c55e' : status === 'arkiveret' ? '#9ca3af' : status === 'læst' ? '#6b7280' : '#3b82f6';
+                            return (
+                                <div key={msg.id} className={styles.adminCard} style={{ borderLeft: `4px solid ${borderColor}` }}>
+                                    <div className={styles.adminCardTop}>
+                                        <div className={styles.adminCardInfo}>
+                                            <span className={styles.adminCardName}>{msg.name}</span>
+                                            <a href={`mailto:${msg.email}`} className={styles.adminCardEmail}>{msg.email}</a>
+                                        </div>
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.3rem', flexShrink: 0 }}>
+                                            <StatusBadge status={status} />
+                                            <span className={styles.adminCardDate}>{formatDate(msg.created)}</span>
+                                        </div>
+                                    </div>
 
-                                {/* Eksisterende svar – vis under rækken */}
-                                {msg.reply && replyingTo !== msg.id && (
-                                    <tr key={`${msg.id}-reply`} style={{ background: '#f0fdf4' }}>
-                                        <td colSpan={7} style={{ padding: '0.6rem 1rem' }}>
-                                            <strong style={{ fontSize: '0.8rem', color: '#15803d' }}>
-                                                ✓ Svar sendt {formatDate(msg.repliedAt)}:
-                                            </strong>
-                                            <p style={{ margin: '0.2rem 0 0', fontSize: '0.85rem', color: '#374151', whiteSpace: 'pre-wrap' }}>
-                                                {msg.reply}
-                                            </p>
-                                        </td>
-                                    </tr>
-                                )}
+                                    {msg.category && (
+                                        <div className={styles.adminCardChips}>
+                                            <span className={styles.adminChip}>
+                                                <span className={styles.adminChipLabel}>Emne</span>
+                                                <span className={styles.adminChipValue}>{msg.category}</span>
+                                            </span>
+                                        </div>
+                                    )}
 
-                                {/* Svar-formular – åbner inline under rækken */}
-                                {replyingTo === msg.id && (
-                                    <tr key={`${msg.id}-form`} style={{ background: '#f8faff' }}>
-                                        <td colSpan={7} style={{ padding: '0.8rem 1rem' }}>
-                                            <p style={{ margin: '0 0 0.4rem', fontSize: '0.85rem', color: '#374151' }}>
-                                                Skriv et svar til <strong>{msg.name}</strong> ({msg.email}):
+                                    <p className={styles.adminCardMessage}>{msg.message}</p>
+
+                                    {msg.reply && replyingTo !== msg.id && (
+                                        <div className={styles.adminExistingReply}>
+                                            <div className={styles.adminExistingReplyLabel}>✓ Svar sendt {formatDate(msg.repliedAt)}:</div>
+                                            <p className={styles.adminExistingReplyText}>{msg.reply}</p>
+                                        </div>
+                                    )}
+
+                                    {replyingTo === msg.id && (
+                                        <div className={styles.adminReplyForm}>
+                                            <p className={styles.adminReplyMeta}>
+                                                Svar til <strong>{msg.name}</strong> ({msg.email}):
                                             </p>
                                             <textarea
                                                 value={replyText}
                                                 onChange={e => setReplyText(e.target.value)}
                                                 rows={4}
                                                 placeholder="Skriv dit svar her…"
-                                                style={{
-                                                    width: '100%',
-                                                    padding: '0.5rem',
-                                                    border: '1px solid #cbd5e1',
-                                                    borderRadius: '6px',
-                                                    fontSize: '0.9rem',
-                                                    resize: 'vertical',
-                                                    boxSizing: 'border-box',
-                                                }}
                                             />
-                                            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+                                            <div className={styles.adminReplyActions}>
                                                 <button
                                                     onClick={() => handleSendReply(msg)}
                                                     disabled={replySending || !replyText.trim()}
-                                                    className={styles.btnSave}
+                                                    className={styles.adminBtnSave}
                                                 >
                                                     {replySending ? 'Sender…' : 'Send svar'}
                                                 </button>
-                                                <button onClick={cancelReply} className={styles.btnCancel}>
+                                                <button onClick={cancelReply} className={styles.adminBtnCancel}>
                                                     Annuller
                                                 </button>
                                             </div>
-                                        </td>
-                                    </tr>
-                                )}
-                                </>
-                            ))}
-                        </tbody>
-                    </table>
+                                        </div>
+                                    )}
+
+                                    <div className={styles.adminCardActions}>
+                                        {status === 'ny' && (
+                                            <button
+                                                onClick={() => handleStatusChange(msg, 'læst')}
+                                                className={styles.adminBtnEdit}
+                                            >
+                                                Markér læst
+                                            </button>
+                                        )}
+                                        <button
+                                            onClick={() => replyingTo === msg.id ? cancelReply() : openReply(msg)}
+                                            className={styles.adminBtnInfo}
+                                        >
+                                            {replyingTo === msg.id ? 'Luk svar' : 'Svar'}
+                                        </button>
+                                        <button onClick={() => handleDelete(msg)} className={styles.adminBtnDanger}>
+                                            Slet
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+
+                {totalPages > 1 && (
+                    <div className={styles.pagination}>
+                        <button
+                            className={styles.btnEdit}
+                            onClick={() => setPage(p => Math.max(1, p - 1))}
+                            disabled={page === 1 || loading}
+                        >
+                            ← Forrige
+                        </button>
+                        <span className={styles.pageInfo}>Side {page} af {totalPages}</span>
+                        <button
+                            className={styles.btnEdit}
+                            onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                            disabled={page === totalPages || loading}
+                        >
+                            Næste →
+                        </button>
+                    </div>
                 )}
             </section>
         </div>
