@@ -1,70 +1,27 @@
-// Henter React Hooks til state og side-effects
-import { useState, useEffect } from "react";
-import Review from "../review/Review";          // Enkelt review-kort
-import styles from "./reviews.module.css";      // Modul-specifik styling
+﻿// src/components/reviews/Reviews.jsx
+import Review from "../review/Review";
+import styles from "./reviews.module.css";
 
-const Reviews = () => {
-  // ===============================================================
-  // STATE: reviews
-  // - Et array med anmeldelser hentet fra API'et.
-  // - Starter tomt og fyldes ved første render via useEffect.
-  // ===============================================================
-  const [reviews, setReviews] = useState([]);
-
-  // ===============================================================
-  // useEffect → Henter data fra API'et når komponenten loader
-  // - Fetch kaldes KUN én gang (tom dependency-array [])
-  // - Henter /reviews endpoint fra glamping-API'et
-  // - Hvis success → gemmer data i state
-  // - Hvis fejl → logger til konsollen
-  // ===============================================================
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:3042/reviews"
-        );
-        const data = await response.json();
-
-        // API'et returnerer { data: [...] } eller direkte array
-        setReviews(data.data ?? data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchReviews();
-  }, []);
-
-  return (
-    // ===============================================================
-    // HOVED-SEKTION: indeholder overskrift + liste af anmeldelser
-    // ===============================================================
-    <section className={styles.reviewsSection}>
-      
-      {/* Beige header-boks med overskrift – matcher designet */}
-      <div className={styles.headingBox}>
-        <h2>
-          Vores gæster
-          <br />
-          udtaler
-        </h2>
-      </div>
-
-      {/* ===========================================================
-          Liste af anmeldelseskort
-          - <ul> bruges for semantik
-          - Hvert review vises via Review-komponenten
-         =========================================================== */}
-      <ul className={styles.reviewList}>
-        {reviews.map((review, index) => (
-          <li key={index} className={styles.card}>
-            <Review review={review} />
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
+// reviews-prop leveres af Home.jsx via useLoaderData()
+const Reviews = ({ reviews = [] }) => {
+    return (
+        <section className={styles.reviewsSection}>
+            <div className={styles.headingBox}>
+                <h2>
+                    Vores gaester
+                    <br />
+                    udtaler
+                </h2>
+            </div>
+            <ul className={styles.reviewList}>
+                {reviews.map((review, index) => (
+                    <li key={index} className={styles.card}>
+                        <Review review={review} />
+                    </li>
+                ))}
+            </ul>
+        </section>
+    );
 };
 
 export default Reviews;

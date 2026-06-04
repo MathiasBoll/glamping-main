@@ -1,74 +1,16 @@
-// src/components/staysSection/StaysSection.jsx
-
-import { useEffect, useState } from "react";
+﻿// src/components/staysSection/StaysSection.jsx
 import Stay from "../stay/stay";
 
-/*
-  StaysSection
-  -----------------------------------------------------
-  Denne komponent henter alle ophold fra API'et og
-  viser dem i en liste. Hvert ophold bliver vist som
-  et <Stay>-kort, som er ansvarlig for selve layoutet.
-*/
-const StaysSection = () => {
-  // stays = liste af ophold fra API
-  // setStays = opdaterer stays
-  const [stays, setStays] = useState([]);
-
-  /*
-    fetchStays()
-    ---------------------------------------------------
-    Asynkron funktion der henter data fra backend-API’et.
-    Hvis API-kaldet lykkes, gemmes resultatet i state.
-    Hvis noget går galt, logges fejlen i konsollen.
-  */
-  const fetchStays = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:3042/stays"
-      );
-
-      const data = await response.json();
-
-      console.log(data); // Debug: viser hvad API’et returnerer
-
-      // Filtrer skjulte ophold fra (isActive !== false)
-      const list = data.data ?? data;
-      setStays(list.filter(s => s.isActive !== false));
-    } catch (error) {
-      console.log("Fejl ved hentning af ophold:", error);
-    }
-  };
-
-  /*
-    useEffect()
-    ---------------------------------------------------
-    Et React-hook der sikrer, at fetchStays() kun
-    bliver kørt én gang når komponenten loader.
-    Den tomme afhængighedsliste [] betyder:
-    "kør kun ved første render".
-  */
-  useEffect(() => {
-    fetchStays();
-  }, []);
-
-  return (
-    <section className="container">
-      {/* Title fjernet da stays-styling håndterer egne overskrifter */}
-      <h1></h1>
-
-      {/*
-        Vi mapper stays-arrayet og viser et <Stay>-kort
-        for hvert element.
-
-        key={stay._id} giver React en unik identifikator,
-        så listen kan opdateres effektivt.
-      */}
-      {stays.map((stay) => (
-        <Stay stay={stay} key={stay._id} />
-      ))}
-    </section>
-  );
+// stays-prop leveres af Stays.jsx via useLoaderData()
+const StaysSection = ({ stays = [] }) => {
+    return (
+        <section className="container">
+            <h1></h1>
+            {stays.map((stay) => (
+                <Stay stay={stay} key={stay._id} />
+            ))}
+        </section>
+    );
 };
 
 export default StaysSection;

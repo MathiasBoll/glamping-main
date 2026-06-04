@@ -1,30 +1,19 @@
-// src/pages/Home.jsx
-
-// Import af sektioner som tilsammen udgør forsiden
+﻿// src/pages/Home.jsx
+import { useLoaderData } from "react-router";
 import InfoSection from "../components/infoSection/InfoSection";
 import PageHeader from "../components/pageHeader/PageHeader";
 import Reviews from "../components/reviews/Reviews";
 
-/*
-  Home-siden er meget simpel:
-  - Øverst vises PageHeader (hero-sektionen)
-  - Derefter InfoSection (intro-tekst + billede + CTA-knap)
-  - Nederst Reviews (udtalelser fra gæster)
-*/
-
 const Home = () => {
-  return (
-    <article>
-      {/* HERO / forsideheader */}
-      <PageHeader />
+    const reviews = useLoaderData();
 
-      {/* Info-sektion med tekst, billede og “Se vores ophold” knap */}
-      <InfoSection />
-
-      {/* Sektion med gæsteanmeldelser hentet fra API */}
-      <Reviews />
-    </article>
-  );
+    return (
+        <article>
+            <PageHeader />
+            <InfoSection />
+            <Reviews reviews={reviews} />
+        </article>
+    );
 };
 
 export default Home;

@@ -1,40 +1,53 @@
-// src/main.jsx
-
-// StrictMode hjælper med at opdage potentielle fejl i udvikling.
-// Det påvirker IKKE produktionen—kun udviklingsmiljøet.
+﻿// src/main.jsx
 import { StrictMode } from "react";
-
-// createRoot er den moderne måde at “montere” React-appen i DOM’en.
 import { createRoot } from "react-dom/client";
-
-// App er vores hovedkomponent, der indeholder hele applikationen.
+import { createBrowserRouter, RouterProvider } from "react-router";
 import App from "./App.jsx";
+import Home from "./pages/Home.jsx";
+import Stays from "./pages/Stays.jsx";
+import Activities from "./pages/Activities.jsx";
+import ActivityDetails from "./pages/ActivityDetails.jsx";
+import StayDetails from "./components/stayDetails/StayDetails";
+import LikedActivities from "./pages/LikedActivities.jsx";
+import Contact from "./pages/Contact.jsx";
+import Backoffice from "./pages/Backoffice.jsx";
+import BackofficeLogin from "./pages/BackofficeLogin.jsx";
+import BeskyttetRute from "./components/admin/BeskyttetRute.jsx";
+import Backend from "./pages/Backend";
+import {
+    reviewsLoader,
+    activitiesLoader,
+    staysLoader,
+    stayDetailsLoader,
+    activityDetailsLoader,
+    backofficeLoader,
+} from "./loaders/DataLoaders.js";
 
-// BrowserRouter gør det muligt at bruge routing (URL-baseret navigation).
-import { BrowserRouter } from "react-router-dom";
+const router = createBrowserRouter([
+    {
+        element: <App />,
+        children: [
+            { path: "/", element: <Home />, loader: reviewsLoader },
+            { path: "/stays", element: <Stays />, loader: staysLoader },
+            { path: "/stay/:id", element: <StayDetails />, loader: stayDetailsLoader },
+            { path: "/activities", element: <Activities />, loader: activitiesLoader },
+            { path: "/activity/:id", element: <ActivityDetails />, loader: activityDetailsLoader },
+            { path: "/liked", element: <LikedActivities /> },
+            { path: "/contact", element: <Contact /> },
+            { path: "/backoffice/login", element: <BackofficeLogin /> },
+            {
+                element: <BeskyttetRute />,
+                children: [
+                    { path: "/backoffice", element: <Backoffice />, loader: backofficeLoader },
+                ],
+            },
+            { path: "/backend", element: <Backend /> },
+        ],
+    },
+]);
 
-/* 
-  BrowserRouter skal ligge omkring hele App.
-
-  Det betyder:
-  - at alle child-komponenter får adgang til routing-funktioner
-    (useNavigate, NavLink, useParams, useLocation m.fl.)
-  - at appen reagerer på ændringer i URL’en uden at reloade siden
-  - at vores <Navigation />, <PageHeader /> osv. kan bruge routerens data
-
-  Hvis BrowserRouter IKKE lå yderst:
-  → ingen navigation
-  → ingen dynamiske sider
-  → ingen single-view (stay/activity details)
-*/
-
-// Vi finder HTML-elementet med id="root" og “mount’er” React i det.
-// createRoot er React 18’s nye metode, som giver performance-fordele.
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    {/* Routeren omringer hele appen og giver adgang til routes overalt */}
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </StrictMode>
+    <StrictMode>
+        <RouterProvider router={router} />
+    </StrictMode>
 );
