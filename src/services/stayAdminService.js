@@ -13,7 +13,7 @@ export const getAdminStays = () => {
 // Opret nyt ophold
 // data = { title, numberOfPersons, price, image, teaser }
 export const createStay = (data) => {
-    return apiClient('/stays', {
+    return apiClient('/stay', {
         method: 'POST',
         body: JSON.stringify(data),
     });
@@ -21,7 +21,7 @@ export const createStay = (data) => {
 
 // Opdater eksisterende ophold via id
 export const updateStay = (id, data) => {
-    return apiClient(`/stays/${id}`, {
+    return apiClient(`/stay/${id}`, {
         method: 'PUT',
         body: JSON.stringify(data),
     });
@@ -29,14 +29,14 @@ export const updateStay = (id, data) => {
 
 // Slet ophold via id
 export const deleteStay = (id) => {
-    return apiClient(`/stays/${id}`, {
+    return apiClient(`/stay/${id}`, {
         method: 'DELETE',
     });
 };
 
 // Slå ophold til/fra (isActive: true/false)
 export const toggleStayActive = (id, isActive) => {
-    return apiClient(`/stays/${id}`, {
+    return apiClient(`/stay/${id}`, {
         method: 'PUT',
         body: JSON.stringify({ isActive }),
     });

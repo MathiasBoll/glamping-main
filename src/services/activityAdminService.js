@@ -1,8 +1,12 @@
 // src/services/activityAdminService.js
 // ─────────────────────────────────────────────────────────
 // Servicefunktioner til backoffice aktivitetsstyring.
-// Al kommunikation med backend sker HER — ikke direkte i components.
-// Det gør det nemt at skifte API-url eller tilføje auth senere.
+// Backend-routes (singular):
+//   GET    /activities        → hent alle
+//   GET    /activity/:id      → hent én
+//   POST   /activity          → opret
+//   PUT    /activity/:id      → opdater
+//   DELETE /activity/:id      → slet
 // ─────────────────────────────────────────────────────────
 
 import apiClient from './apiClient';
@@ -15,7 +19,7 @@ export const getAdminActivities = () => {
 // Opret ny aktivitet
 // data = { title, date, time, description, image }
 export const createActivity = (data) => {
-    return apiClient('/activities', {
+    return apiClient('/activity', {
         method: 'POST',
         body: JSON.stringify(data),
     });
@@ -24,7 +28,7 @@ export const createActivity = (data) => {
 // Opdater eksisterende aktivitet via id
 // data = de felter der skal ændres
 export const updateActivity = (id, data) => {
-    return apiClient(`/activities/${id}`, {
+    return apiClient(`/activity/${id}`, {
         method: 'PUT',
         body: JSON.stringify(data),
     });
@@ -32,14 +36,14 @@ export const updateActivity = (id, data) => {
 
 // Slet aktivitet via id
 export const deleteActivity = (id) => {
-    return apiClient(`/activities/${id}`, {
+    return apiClient(`/activity/${id}`, {
         method: 'DELETE',
     });
 };
 
 // Slå aktivitet til/fra (isActive: true/false)
 export const toggleActivityActive = (id, isActive) => {
-    return apiClient(`/activities/${id}`, {
+    return apiClient(`/activity/${id}`, {
         method: 'PUT',
         body: JSON.stringify({ isActive }),
     });

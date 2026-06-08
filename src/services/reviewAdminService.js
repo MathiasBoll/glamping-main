@@ -13,7 +13,7 @@ export const getAdminReviews = () => {
 // Opret ny anmeldelse
 // data = { name, age, stay, review }
 export const createReview = (data) => {
-    return apiClient('/reviews', {
+    return apiClient('/review', {
         method: 'POST',
         body: JSON.stringify(data),
     });
@@ -21,7 +21,7 @@ export const createReview = (data) => {
 
 // Opdater eksisterende anmeldelse via id
 export const updateReview = (id, data) => {
-    return apiClient(`/reviews/${id}`, {
+    return apiClient(`/review/${id}`, {
         method: 'PUT',
         body: JSON.stringify(data),
     });
@@ -29,7 +29,7 @@ export const updateReview = (id, data) => {
 
 // Slet anmeldelse via id
 export const deleteReview = (id) => {
-    return apiClient(`/reviews/${id}`, {
+    return apiClient(`/review/${id}`, {
         method: 'DELETE',
     });
 };

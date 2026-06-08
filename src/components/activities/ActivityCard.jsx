@@ -15,12 +15,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./activities.module.css";
+import { normalizeActivityTitle } from "../../utils/activityTitle";
 
 // Custom hook der indeholder hele like-logikken med useLocalStorage
 import { useLikedList } from "../../hooks/useLikedList";
 
 const ActivityCard = ({ activity, onToggleLike }) => {
   const navigate = useNavigate();
+  const displayTitle = normalizeActivityTitle(activity.title);
 
   // Styrer om beskrivelsen er synlig (Læs mere-knap)
   const [showMore, setShowMore] = useState(false);
@@ -61,12 +63,12 @@ const ActivityCard = ({ activity, onToggleLike }) => {
     <div className={styles.activityCard}>
       
       {/* Titel i beige top-bjælke */}
-      <div className={styles.activityTitle}>{activity.title}</div>
+      <div className={styles.activityTitle}>{displayTitle}</div>
 
       {/* Aktivitetens billede */}
       <img
         src={activity.image}
-        alt={activity.title}
+        alt={displayTitle}
         className={styles.activityImg}
       />
 

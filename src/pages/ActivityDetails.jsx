@@ -1,7 +1,8 @@
-﻿// src/pages/ActivityDetails.jsx
+// src/pages/ActivityDetails.jsx
 import { useLoaderData } from "react-router";
 import styles from "../components/activities/activities.module.css";
 import heroImg from "../assets/image_04.jpg";
+import { normalizeActivityTitle } from "../utils/activityTitle";
 
 const ActivityDetails = () => {
     const activity = useLoaderData();

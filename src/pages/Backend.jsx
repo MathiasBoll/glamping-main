@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./backend.module.css";
+import { normalizeActivityTitle } from "../utils/activityTitle";
 
 const API = "http://localhost:3042";
 const ADMIN_TOKEN = "glamping-admin-2026";
@@ -78,19 +79,19 @@ const Backend = () => {
 
   // ── Review actions ──
   const toggleReviewVisibility = (review) =>
-    fetch(`${API}/reviews/${review.id || review._id}`, {
+    fetch(`${API}/review/${review.id || review._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isVisible: !review.isVisible }),
     }).then(fetchReviews);
 
   const deleteReview = (id) =>
-    fetch(`${API}/reviews/${id}`, { method: "DELETE" }).then(fetchReviews);
+    fetch(`${API}/review/${id}`, { method: "DELETE" }).then(fetchReviews);
 
   // ── Activity actions ──
   const createActivity = (e) => {
     e.preventDefault();
-    fetch(`${API}/activities`, {
+    fetch(`${API}/activity`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newActivity),
@@ -101,12 +102,12 @@ const Backend = () => {
   };
 
   const deleteActivity = (id) =>
-    fetch(`${API}/activities/${id}`, { method: "DELETE" }).then(fetchActivities);
+    fetch(`${API}/activity/${id}`, { method: "DELETE" }).then(fetchActivities);
 
   // ── Stay actions ──
   const createStay = (e) => {
     e.preventDefault();
-    fetch(`${API}/stays`, {
+    fetch(`${API}/stay`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newStay),
@@ -117,7 +118,7 @@ const Backend = () => {
   };
 
   const deleteStay = (id) =>
-    fetch(`${API}/stays/${id}`, { method: "DELETE" }).then(fetchStays);
+    fetch(`${API}/stay/${id}`, { method: "DELETE" }).then(fetchStays);
 
   // ── Booking actions ──
   const updateBookingStatus = (id, status) =>
@@ -252,7 +253,7 @@ const Backend = () => {
             {activities.map(a => (
               <div key={a.id} className={styles.card}>
                 <div className={styles.cardTop}>
-                  <span className={styles.cardName}>{a.title}</span>
+                  <span className={styles.cardName}>{normalizeActivityTitle(a.title)}</span>
                   <span className={styles.cardMeta}>{a.date} kl. {a.time}</span>
                   <span className={`${styles.badge} ${a.isActive ? styles.badgeBesvaret : styles.badgeArkiveret}`}>
                     {a.isActive ? "Aktiv" : "Inaktiv"}

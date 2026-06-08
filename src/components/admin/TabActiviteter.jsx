@@ -12,6 +12,7 @@ import {
     toggleActivityActive,
 } from '../../services/activityAdminService';
 import { uploadImage } from '../../services/uploadService';
+import { normalizeActivityTitle } from '../../utils/activityTitle';
 import styles from '../../pages/Backoffice.module.css';
 
 const EMPTY_FORM = { title: '', date: '', time: '', description: '', image: '' };
@@ -42,6 +43,7 @@ const TabActiviteter = () => {
             const normalized = (Array.isArray(data) ? data : data.data ?? []).map(a => ({
                 ...a,
                 _id: a.id || a._id,
+                title: normalizeActivityTitle(a.title || ''),
             }));
             setActivities(normalized);
         } catch {
