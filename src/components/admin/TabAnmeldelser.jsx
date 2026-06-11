@@ -12,6 +12,8 @@ import {
     deleteReview,
 } from '../../services/reviewAdminService';
 import styles from '../../pages/Backoffice.module.css';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const EMPTY_FORM = { name: '', age: '', stay: '', review: '' };
 
@@ -20,20 +22,11 @@ const TabAnmeldelser = () => {
     const [editing, setEditing] = useState(null);
     const [form, setForm] = useState(EMPTY_FORM);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
 
     useEffect(() => { loadReviews(); }, []);
 
-    useEffect(() => {
-        if (!success) return;
-        const t = setTimeout(() => setSuccess(null), 3000);
-        return () => clearTimeout(t);
-    }, [success]);
-
     const loadReviews = async () => {
         setLoading(true);
-        setError(null);
         try {
             const data = await getAdminReviews();
             const normalized = (Array.isArray(data) ? data : data.data ?? []).map(r => ({
@@ -42,7 +35,7 @@ const TabAnmeldelser = () => {
             }));
             setReviews(normalized);
         } catch {
-            setError('Kunne ikke hente anmeldelser. Er backend-serveren kørende på port 3042?');
+            toast.error('Kunne ikke hente anmeldelser. Er backend-serveren kørende på port 3042?');
         } finally {
             setLoading(false);
         }
@@ -70,39 +63,44 @@ const TabAnmeldelser = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(null);
         try {
             if (editing) {
                 await updateReview(editing._id || editing.id, form);
-                setSuccess('Anmeldelse opdateret!');
+                toast.success('Anmeldelse opdateret!');
                 setEditing(null);
             } else {
                 await createReview(form);
-                setSuccess('Anmeldelse oprettet!');
+                toast.success('Anmeldelse oprettet!');
             }
             setForm(EMPTY_FORM);
             loadReviews();
         } catch (err) {
-            setError(err.message);
+            toast.error(err.message);
         }
     };
 
     const handleDelete = async (review) => {
-        if (!window.confirm(`Er du sikker på at du vil slette anmeldelsen fra "${review.name}"?`)) return;
+        const result = await Swal.fire({
+            title: `Slet anmeldelsen fra "${review.name}"?`,
+            text: 'Denne handling kan ikke fortrydes.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Ja, slet den!',
+            cancelButtonText: 'Annuller',
+        });
+        if (!result.isConfirmed) return;
         try {
             await deleteReview(review._id || review.id);
-            setSuccess('Anmeldelse slettet!');
+            toast.success('Anmeldelse slettet!');
             loadReviews();
         } catch (err) {
-            setError(err.message);
+            toast.error(err.message);
         }
     };
 
     return (
         <div>
-            {error && <p className={styles.error}>{error}</p>}
-            {success && <p className={styles.successMsg}>{success}</p>}
-
             <section className={styles.formSection}>
                 <h2>{editing ? 'Rediger anmeldelse' : 'Tilføj anmeldelse'}</h2>
                 <form onSubmit={handleSubmit} className={styles.form}>

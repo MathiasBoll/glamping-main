@@ -14,6 +14,8 @@ import {
 import { uploadImage } from '../../services/uploadService';
 import { normalizeActivityTitle } from '../../utils/activityTitle';
 import styles from '../../pages/Backoffice.module.css';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const EMPTY_FORM = { title: '', date: '', time: '', description: '', image: '' };
 
@@ -22,22 +24,13 @@ const TabActiviteter = () => {
     const [editing, setEditing] = useState(null);
     const [form, setForm] = useState(EMPTY_FORM);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef(null);
 
     useEffect(() => { loadActivities(); }, []);
 
-    useEffect(() => {
-        if (!success) return;
-        const t = setTimeout(() => setSuccess(null), 3000);
-        return () => clearTimeout(t);
-    }, [success]);
-
     const loadActivities = async () => {
         setLoading(true);
-        setError(null);
         try {
             const data = await getAdminActivities();
             const normalized = (Array.isArray(data) ? data : data.data ?? []).map(a => ({
@@ -47,7 +40,7 @@ const TabActiviteter = () => {
             }));
             setActivities(normalized);
         } catch {
-            setError('Kunne ikke hente aktiviteter. Er backend-serveren kørende på port 3042?');
+            toast.error('Kunne ikke hente aktiviteter. Er backend-serveren kørende på port 3042?');
         } finally {
             setLoading(false);
         }
@@ -61,12 +54,11 @@ const TabActiviteter = () => {
         const file = e.target.files?.[0];
         if (!file) return;
         setUploading(true);
-        setError(null);
         try {
             const url = await uploadImage(file);
             setForm(prev => ({ ...prev, image: url }));
         } catch (err) {
-            setError('Billedet kunne ikke uploades: ' + err.message);
+            toast.error('Billedet kunne ikke uploades: ' + err.message);
         } finally {
             setUploading(false);
             // Nulstil input så samme fil kan vælges igen
@@ -93,31 +85,39 @@ const TabActiviteter = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(null);
         try {
             if (editing) {
                 await updateActivity(editing._id || editing.id, form);
-                setSuccess('Aktivitet opdateret!');
+                toast.success('Aktivitet opdateret!');
                 setEditing(null);
             } else {
                 await createActivity(form);
-                setSuccess('Aktivitet oprettet!');
+                toast.success('Aktivitet oprettet!');
             }
             setForm(EMPTY_FORM);
             loadActivities();
         } catch (err) {
-            setError(err.message);
+            toast.error(err.message);
         }
     };
 
     const handleDelete = async (activity) => {
-        if (!window.confirm(`Er du sikker på at du vil slette "${activity.title}"?`)) return;
+        const result = await Swal.fire({
+            title: `Slet "${activity.title}"?`,
+            text: 'Denne handling kan ikke fortrydes.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Ja, slet den!',
+            cancelButtonText: 'Annuller',
+        });
+        if (!result.isConfirmed) return;
         try {
             await deleteActivity(activity._id || activity.id);
-            setSuccess('Aktivitet slettet!');
+            toast.success('Aktivitet slettet!');
             loadActivities();
         } catch (err) {
-            setError(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -125,18 +125,15 @@ const TabActiviteter = () => {
         const newValue = activity.isActive === false ? true : false;
         try {
             await toggleActivityActive(activity._id || activity.id, newValue);
-            setSuccess(newValue ? `"${activity.title}" er nu synlig.` : `"${activity.title}" er nu skjult.`);
+            toast.success(newValue ? `"${activity.title}" er nu synlig.` : `"${activity.title}" er nu skjult.`);
             loadActivities();
         } catch (err) {
-            setError(err.message);
+            toast.error(err.message);
         }
     };
 
     return (
         <div>
-            {error && <p className={styles.error}>{error}</p>}
-            {success && <p className={styles.successMsg}>{success}</p>}
-
             <section className={styles.formSection}>
                 <h2>{editing ? 'Rediger aktivitet' : 'Tilføj aktivitet'}</h2>
                 <form onSubmit={handleSubmit} className={styles.form}>

@@ -14,6 +14,8 @@ import {
 } from '../../services/stayAdminService';
 import { uploadImage } from '../../services/uploadService';
 import styles from '../../pages/Backoffice.module.css';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const EMPTY_FORM = { title: '', teaser: '', numberOfPersons: '', price: '', image: '' };
 
@@ -22,22 +24,13 @@ const TabOphold = () => {
     const [editing, setEditing] = useState(null);
     const [form, setForm] = useState(EMPTY_FORM);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef(null);
 
     useEffect(() => { loadStays(); }, []);
 
-    useEffect(() => {
-        if (!success) return;
-        const t = setTimeout(() => setSuccess(null), 3000);
-        return () => clearTimeout(t);
-    }, [success]);
-
     const loadStays = async () => {
         setLoading(true);
-        setError(null);
         try {
             const data = await getAdminStays();
             const normalized = (Array.isArray(data) ? data : data.data ?? []).map(s => ({
@@ -46,7 +39,7 @@ const TabOphold = () => {
             }));
             setStays(normalized);
         } catch {
-            setError('Kunne ikke hente ophold. Er backend-serveren kørende på port 3042?');
+            toast.error('Kunne ikke hente ophold. Er backend-serveren kørende på port 3042?');
         } finally {
             setLoading(false);
         }
@@ -60,12 +53,11 @@ const TabOphold = () => {
         const file = e.target.files?.[0];
         if (!file) return;
         setUploading(true);
-        setError(null);
         try {
             const url = await uploadImage(file);
             setForm(prev => ({ ...prev, image: url }));
         } catch (err) {
-            setError('Billedet kunne ikke uploades: ' + err.message);
+            toast.error('Billedet kunne ikke uploades: ' + err.message);
         } finally {
             setUploading(false);
             if (fileInputRef.current) fileInputRef.current.value = '';
@@ -91,31 +83,39 @@ const TabOphold = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(null);
         try {
             if (editing) {
                 await updateStay(editing._id || editing.id, form);
-                setSuccess('Ophold opdateret!');
+                toast.success('Ophold opdateret!');
                 setEditing(null);
             } else {
                 await createStay(form);
-                setSuccess('Ophold oprettet!');
+                toast.success('Ophold oprettet!');
             }
             setForm(EMPTY_FORM);
             loadStays();
         } catch (err) {
-            setError(err.message);
+            toast.error(err.message);
         }
     };
 
     const handleDelete = async (stay) => {
-        if (!window.confirm(`Er du sikker på at du vil slette "${stay.title}"?`)) return;
+        const result = await Swal.fire({
+            title: `Slet "${stay.title}"?`,
+            text: 'Denne handling kan ikke fortrydes.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Ja, slet det!',
+            cancelButtonText: 'Annuller',
+        });
+        if (!result.isConfirmed) return;
         try {
             await deleteStay(stay._id || stay.id);
-            setSuccess('Ophold slettet!');
+            toast.success('Ophold slettet!');
             loadStays();
         } catch (err) {
-            setError(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -123,18 +123,15 @@ const TabOphold = () => {
         const newValue = stay.isActive === false ? true : false;
         try {
             await toggleStayActive(stay._id || stay.id, newValue);
-            setSuccess(newValue ? `"${stay.title}" er nu synlig.` : `"${stay.title}" er nu skjult.`);
+            toast.success(newValue ? `"${stay.title}" er nu synlig.` : `"${stay.title}" er nu skjult.`);
             loadStays();
         } catch (err) {
-            setError(err.message);
+            toast.error(err.message);
         }
     };
 
     return (
         <div>
-            {error && <p className={styles.error}>{error}</p>}
-            {success && <p className={styles.successMsg}>{success}</p>}
-
             <section className={styles.formSection}>
                 <h2>{editing ? 'Rediger ophold' : 'Tilføj ophold'}</h2>
                 <form onSubmit={handleSubmit} className={styles.form}>
