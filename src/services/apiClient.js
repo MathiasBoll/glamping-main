@@ -6,17 +6,22 @@
 // ─────────────────────────────────────────────────────────
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3042';
-const ADMIN_TOKEN = import.meta.env.VITE_ADMIN_TOKEN || 'glamping-admin-2026';
+const STATIC_TOKEN = import.meta.env.VITE_ADMIN_TOKEN || 'glamping-admin-2026';
 
 // Hjælpefunktion der wrapper fetch med fejlhåndtering
 // og automatisk JSON-parsing.
 const apiClient = async (endpoint, options = {}) => {
     const url = `${BASE_URL}${endpoint}`;
 
+    // Brug JWT fra sessionStorage hvis tilgængeligt, ellers statisk token
+    const jwt = sessionStorage.getItem('glamping-admin-jwt');
+    const token = jwt || STATIC_TOKEN;
+
     const response = await fetch(url, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${ADMIN_TOKEN}`,
+            'Authorization': `Bearer ${token}`,
+            ...options.headers,
         },
         ...options,
     });

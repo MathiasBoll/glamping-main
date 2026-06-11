@@ -1,9 +1,10 @@
 // src/pages/BackofficeLogin.jsx
-// ─────────────────────────────────────────────────────────
+// ---------------------------------------------------------
 // Admin login-side til backoffice.
-// Login-status gemmes i sessionStorage og mistes ved luk af browser.
-// Brugernavn: admin  |  Adgangskode: glamping2025
-// ─────────────────────────────────────────────────────────
+// Kalder backend /auth/signin og gemmer JWT i sessionStorage.
+// Falder tilbage til lokal check (admin / glamping2026) hvis
+// backend-brugeren endnu ikke er oprettet.
+// ---------------------------------------------------------
 
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router'
@@ -14,7 +15,7 @@ function BackofficeLogin() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [brugernavn, setBrugernavn] = useState('')
+  const [email, setEmail] = useState('')
   const [adgangskode, setAdgangskode] = useState('')
   const [fejl, setFejl] = useState('')
   const [loggerInd, setLoggerInd] = useState(false)
@@ -22,17 +23,17 @@ function BackofficeLogin() {
   // Send brugeren tilbage til den side de forsøgte at tilgå, eller /backoffice
   const redirectTil = location.state?.from || '/backoffice'
 
-  function haandterLogin(e) {
+  async function haandterLogin(e) {
     e.preventDefault()
     if (loggerInd) return
 
     setLoggerInd(true)
     setFejl('')
 
-    const lykkedes = logAdminInd(brugernavn, adgangskode)
+    const lykkedes = await logAdminInd(email, adgangskode)
 
     if (!lykkedes) {
-      setFejl('Forkert brugernavn eller adgangskode.')
+      setFejl('Forkert e-mail eller adgangskode.')
       setLoggerInd(false)
       return
     }
@@ -56,14 +57,14 @@ function BackofficeLogin() {
 
         <form onSubmit={haandterLogin} noValidate>
           <div className={styles.felt}>
-            <label htmlFor="brugernavn">Brugernavn</label>
+            <label htmlFor="email">E-mail</label>
             <input
-              id="brugernavn"
-              type="text"
-              value={brugernavn}
-              onChange={(e) => setBrugernavn(e.target.value)}
-              placeholder="Skriv dit brugernavn"
-              autoComplete="username"
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Skriv din e-mail"
+              autoComplete="email"
               required
             />
           </div>

@@ -3,6 +3,8 @@
 // Hook fra @uidotdev/usehooks bruges til at synkronisere state med localStorage,
 // så "likedList" automatisk gemmes og hentes på tværs af sessions.
 import { useLocalStorage } from "@uidotdev/usehooks";
+import { erBrugerLoggetInd } from "../utils/userAuth";
+import { tilfoejTilListe, fjernFraListe } from "../services/myListService";
 
 // Nøglen vi gemmer listen af likede aktiviteter under i localStorage
 const STORAGE_KEY = "likedList";
@@ -22,6 +24,7 @@ const STORAGE_KEY = "likedList";
     ✓ Logikken ligger ét sted.
     ✓ Kan bruges af alle komponenter uden dobbeltkode.
     ✓ Gemmer automatisk data i localStorage.
+    ✓ Synkroniserer med backend hvis brugeren er logget ind.
 */
 export function useLikedList() {
   // useLocalStorage fungerer som useState — men gemmer værdien i localStorage
@@ -46,6 +49,15 @@ export function useLikedList() {
   const toggleLike = (activity) => {
     setLikedList((prev) => {
       const exists = prev.some((a) => a._id === activity._id);
+
+      // Synkroniser med backend hvis brugeren er logget ind
+      if (erBrugerLoggetInd()) {
+        if (exists) {
+          fjernFraListe(activity._id).catch(console.error);
+        } else {
+          tilfoejTilListe(activity._id).catch(console.error);
+        }
+      }
 
       // Fjern aktivitet hvis den er i listen
       if (exists) {

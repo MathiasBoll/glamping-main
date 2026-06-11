@@ -10,10 +10,12 @@ import ActivityDetails from "./pages/ActivityDetails.jsx";
 import StayDetails from "./components/stayDetails/StayDetails";
 import LikedActivities from "./pages/LikedActivities.jsx";
 import Contact from "./pages/Contact.jsx";
+import UserLogin from "./pages/UserLogin.jsx";
 import Backoffice from "./pages/Backoffice.jsx";
 import BackofficeLogin from "./pages/BackofficeLogin.jsx";
 import BeskyttetRute from "./components/admin/BeskyttetRute.jsx";
 import Backend from "./pages/Backend";
+import Eksamen from "./pages/Eksamen.jsx";
 import {
     reviewsLoader,
     activitiesLoader,
@@ -33,6 +35,7 @@ const router = createBrowserRouter([
             { path: "/activities", element: <Activities />, loader: activitiesLoader },
             { path: "/activity/:id", element: <ActivityDetails />, loader: activityDetailsLoader },
             { path: "/liked", element: <LikedActivities /> },
+            { path: "/login", element: <UserLogin /> },
             { path: "/contact", element: <Contact /> },
             { path: "/backoffice/login", element: <BackofficeLogin /> },
             {
@@ -42,6 +45,7 @@ const router = createBrowserRouter([
                 ],
             },
             { path: "/backend", element: <Backend /> },
+            { path: "/eksamen", element: <Eksamen /> },
         ],
     },
 ]);

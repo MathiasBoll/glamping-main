@@ -2,10 +2,13 @@
 
 // Viser alle aktiviteter som brugeren har "liket"
 // Disse data gemmes i localStorage via useLocalStorage-hooket
+// og synkroniseres til backend hvis brugeren er logget ind.
 
+import { Link } from "react-router";
 import ActivityCard from "../components/activities/ActivityCard";
 import styles from "./LikedActivities.module.css";
 import { useLocalStorage } from "@uidotdev/usehooks"; // krav i opgaven
+import { erBrugerLoggetInd, fjernBrugerSession, hentBruger } from "../utils/userAuth";
 
 // Hero-billede til siden
 import likedHeroImg from "../assets/image_05.jpg";
@@ -21,6 +24,9 @@ const LikedActivities = () => {
     - Fungerer som useState, men persisterer data efter refresh
   */
   const [liked, setLiked] = useLocalStorage(STORAGE_KEY, []);
+
+  const loggetInd = erBrugerLoggetInd();
+  const bruger = hentBruger();
 
   // Antal liked aktiviteter – bruges i hero overlay
   const count = Array.isArray(liked) ? liked.length : 0;
@@ -46,6 +52,32 @@ const LikedActivities = () => {
           <span className={styles.heroCount}>{count}</span>
         </div>
       </section>
+
+      {/* LOGIN-BANNER — vises kun hvis brugeren IKKE er logget ind */}
+      {!loggetInd && (
+        <div className={styles.loginBanner}>
+          <p>
+            <strong>Gem din liste online</strong> — log ind for at synkronisere
+            dine favoritaktiviteter på tværs af enheder.
+          </p>
+          <Link to="/login" state={{ from: "/liked" }} className={styles.loginLink}>
+            Log ind / Opret bruger
+          </Link>
+        </div>
+      )}
+
+      {/* BRUGER INFO — vises når brugeren er logget ind */}
+      {loggetInd && (
+        <div className={styles.brugerInfo}>
+          <span>✓ Logget ind som {bruger?.email}</span>
+          <button
+            className={styles.logUdBtn}
+            onClick={() => { fjernBrugerSession(); window.location.reload(); }}
+          >
+            Log ud
+          </button>
+        </div>
+      )}
 
       {/* SELVE LISTEN MED LIKED AKTIVITETER */}
       <section className={styles.listSection}>
